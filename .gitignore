@@ -21,3 +21,6 @@ env/
 # OS cruft
 .DS_Store
 Thumbs.db
+
+# ZenML
+.zen/
