@@ -22,6 +22,15 @@ def clean_data(
     Annotated[pd.Series, "y_train"],
     Annotated[pd.Series, "y_test"],
 ]:
+    """
+    Preprocess customer data and split into training/testing sets.
+    
+    Args:
+        data: Raw customer DataFrame
+        
+    Returns:
+        Tuple of (x_train, x_test, y_train, y_test) for model training
+    """
     
     try:
         preprocess_strategy = DataPreprocessStrategy()

@@ -13,14 +13,16 @@ docker_settings = DockerSettings(required_integrations=[MLFLOW])
 @pipeline(enable_cache=False, settings={"docker": docker_settings})
 def train_pipeline():
     """
-    End-to-end wiring with local defaults:
-      ingest_data() -> df
-      clean_data(df) -> x_train, x_test, y_train, y_test
-      train_model(...) -> model
-      evaluation(model, x_test, y_test) -> r2, rmse
+    End-to-end ML pipeline for customer satisfaction prediction.
+    
+    Data flow:
+      ingest_data() -> df: Load customer dataset
+      clean_data(df) -> x_train, x_test, y_train, y_test: Preprocess and split data
+      train_model(...) -> model: Train ML model with specified parameters
+      evaluation(model, x_test, y_test) -> r2, rmse: Evaluate model performance
     """
     df = ingest_data()
     x_train, x_test, y_train, y_test = clean_data(df)
-    model = train_model(x_train, x_test, y_train, y_test)
+    model = train_model(x_train, x_test, y_train, y_test, model_name="lightgbm", fine_tuning=False)
     r2, rmse = evaluation(model, x_test, y_test)
     return r2, rmse

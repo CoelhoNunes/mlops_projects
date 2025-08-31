@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/e73c72f2da6744b1bd3f98813e4241bc/artifacts
+end_time: 1756675987912
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: e73c72f2da6744b1bd3f98813e4241bc
+run_name: persistent-shark-754
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756675954485
+status: 3
+tags: []
+user_id: root

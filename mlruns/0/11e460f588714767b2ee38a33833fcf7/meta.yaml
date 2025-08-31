@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/11e460f588714767b2ee38a33833fcf7/artifacts
+end_time: 1756675045338
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 11e460f588714767b2ee38a33833fcf7
+run_name: treasured-smelt-364
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756675012098
+status: 3
+tags: []
+user_id: root

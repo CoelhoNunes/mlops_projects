@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/c994074d0d954b33aba3b249f50e87f4/artifacts
+end_time: 1756676717947
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: c994074d0d954b33aba3b249f50e87f4
+run_name: magnificent-asp-60
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756676685410
+status: 3
+tags: []
+user_id: root

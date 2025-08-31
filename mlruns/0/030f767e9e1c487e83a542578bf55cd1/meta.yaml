@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/030f767e9e1c487e83a542578bf55cd1/artifacts
+end_time: 1756677750525
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 030f767e9e1c487e83a542578bf55cd1
+run_name: wise-rook-424
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756677749969
+status: 3
+tags: []
+user_id: root

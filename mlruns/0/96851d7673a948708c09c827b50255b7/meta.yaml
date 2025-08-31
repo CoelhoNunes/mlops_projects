@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/96851d7673a948708c09c827b50255b7/artifacts
+end_time: 1756675065663
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 96851d7673a948708c09c827b50255b7
+run_name: treasured-wren-845
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756675065075
+status: 3
+tags: []
+user_id: root

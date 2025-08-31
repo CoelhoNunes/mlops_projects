@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/4063bd08e2f44243ac499bde567a1fc8/artifacts
+end_time: 1756674185747
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 4063bd08e2f44243ac499bde567a1fc8
+run_name: bold-worm-590
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756674152060
+status: 3
+tags: []
+user_id: root

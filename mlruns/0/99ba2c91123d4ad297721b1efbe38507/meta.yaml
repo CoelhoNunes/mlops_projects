@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/99ba2c91123d4ad297721b1efbe38507/artifacts
+end_time: 1756678428267
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 99ba2c91123d4ad297721b1efbe38507
+run_name: unruly-hog-353
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756678394989
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/4e6c1b20287e4210b95a4e77abff0322/artifacts
+end_time: 1756675371344
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 4e6c1b20287e4210b95a4e77abff0322
+run_name: puzzled-toad-59
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756675337546
+status: 3
+tags: []
+user_id: root

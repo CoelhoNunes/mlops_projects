@@ -19,7 +19,7 @@ from zenml.integrations.mlflow.model_deployers.mlflow_model_deployer import (
 )
 from zenml.integrations.mlflow.services import MLFlowDeploymentService
 from zenml.integrations.mlflow.steps import mlflow_model_deployer_step
-from zenml.steps import BaseParameters, Output
+from pydantic import BaseModel
 
 from .utils import get_data_for_test
 
@@ -47,7 +47,7 @@ def dynamic_importer() -> str:
     return data
 
 
-class DeploymentTriggerConfig(BaseParameters):
+class DeploymentTriggerConfig(BaseModel):
     """Parameters that are used to trigger the deployment"""
 
     min_accuracy: float = 0.9
@@ -64,7 +64,7 @@ def deployment_trigger(
     return accuracy > config.min_accuracy
 
 
-class MLFlowDeploymentLoaderStepParameters(BaseParameters):
+class MLFlowDeploymentLoaderStepParameters(BaseModel):
     """MLflow deployment getter parameters
 
     Attributes:

@@ -1,0 +1,10 @@
+artifact_location: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/models/m-57971d0986fd4cb2915e2cbdb8b43209/artifacts
+creation_timestamp: 1756675956661
+experiment_id: '0'
+last_updated_timestamp: 1756675987810
+model_id: m-57971d0986fd4cb2915e2cbdb8b43209
+model_type: null
+name: model
+source_run_id: e73c72f2da6744b1bd3f98813e4241bc
+status: 2
+status_message: null

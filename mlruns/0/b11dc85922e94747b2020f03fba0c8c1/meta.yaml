@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/b11dc85922e94747b2020f03fba0c8c1/artifacts
+end_time: 1756681320838
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: b11dc85922e94747b2020f03fba0c8c1
+run_name: upset-stork-255
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756681320242
+status: 3
+tags: []
+user_id: root

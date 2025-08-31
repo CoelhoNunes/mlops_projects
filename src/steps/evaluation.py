@@ -17,6 +17,17 @@ from model.evaluation import MSE, RMSE, R2Score
 def evaluation(
     model: RegressorMixin, x_test: pd.DataFrame, y_test: pd.Series
 ) -> Tuple[Annotated[float, "r2_score"], Annotated[float, "rmse"]]:
+    """
+    Evaluate trained model performance on test data.
+    
+    Args:
+        model: Trained regression model
+        x_test: Test features
+        y_test: Test targets
+        
+    Returns:
+        Tuple of (r2_score, rmse) metrics
+    """
     try:
         prediction = model.predict(x_test)
 

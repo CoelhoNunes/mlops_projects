@@ -27,7 +27,13 @@ class IngestData:
 @step
 def ingest_data(csv_path: str | None = None) -> pd.DataFrame:
     """
-    Load the customers CSV. Optionally override the CSV path via `csv_path`.
+    Load customer satisfaction dataset from CSV file.
+    
+    Args:
+        csv_path: Optional path to CSV file, defaults to project data directory
+        
+    Returns:
+        DataFrame containing customer data
     """
     try:
         ingestor = IngestData(csv_path)

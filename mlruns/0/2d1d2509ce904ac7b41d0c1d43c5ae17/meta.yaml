@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/2d1d2509ce904ac7b41d0c1d43c5ae17/artifacts
+end_time: 1756676009486
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 2d1d2509ce904ac7b41d0c1d43c5ae17
+run_name: learned-robin-548
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756676008901
+status: 3
+tags: []
+user_id: root

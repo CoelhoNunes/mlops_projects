@@ -13,7 +13,7 @@ from model.model_dev import (
     RandomForestModel,
     XGBoostModel,
 )
-from .config import ModelNameConfig
+
 
 
 @step  # let the active ZenML stack provide an experiment tracker if configured
@@ -22,28 +22,39 @@ def train_model(
     x_test: pd.DataFrame,
     y_train: pd.Series,
     y_test: pd.Series,
-    config: ModelNameConfig,
+    model_name: str = "lightgbm",
+    fine_tuning: bool = False,
 ) -> RegressorMixin:
     """
-    Train a model chosen via `config.model_name`. If `config.fine_tuning` is True,
-    run hyperparameter tuning first. MLflow autologging is enabled inside a safe run.
+    Train a machine learning model for customer satisfaction prediction.
+    
+    Args:
+        x_train: Training features
+        x_test: Test features  
+        y_train: Training targets
+        y_test: Test targets
+        model_name: Model to train (lightgbm, randomforest, xgboost, linear_regression)
+        fine_tuning: Whether to perform hyperparameter optimization
+        
+    Returns:
+        Trained model ready for prediction
     """
     try:
         # Select model + autolog flavor
-        if config.model_name == "lightgbm":
+        if model_name == "lightgbm":
             autolog = mlflow.lightgbm.autolog
             model = LightGBMModel()
-        elif config.model_name == "randomforest":
+        elif model_name == "randomforest":
             autolog = mlflow.sklearn.autolog
             model = RandomForestModel()
-        elif config.model_name == "xgboost":
+        elif model_name == "xgboost":
             autolog = mlflow.xgboost.autolog
             model = XGBoostModel()
-        elif config.model_name == "linear_regression":
+        elif model_name == "linear_regression":
             autolog = mlflow.sklearn.autolog
             model = LinearRegressionModel()
         else:
-            raise ValueError(f"Model name not supported: {config.model_name}")
+            raise ValueError(f"Model name not supported: {model_name}")
 
         # Ensure there's an active MLflow run (works with or without a ZenML tracker)
         run_ctx = mlflow.start_run() if mlflow.active_run() is None else contextlib.nullcontext()
@@ -52,7 +63,7 @@ def train_model(
 
             tuner = HyperparameterTuner(model, x_train, y_train, x_test, y_test)
 
-            if config.fine_tuning:
+            if fine_tuning:
                 best_params = tuner.optimize()
                 trained_model = model.train(x_train, y_train, **best_params)
             else:

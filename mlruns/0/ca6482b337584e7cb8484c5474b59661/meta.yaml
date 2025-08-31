@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/ca6482b337584e7cb8484c5474b59661/artifacts
+end_time: 1756677412379
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: ca6482b337584e7cb8484c5474b59661
+run_name: delightful-ape-399
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756677411810
+status: 3
+tags: []
+user_id: root

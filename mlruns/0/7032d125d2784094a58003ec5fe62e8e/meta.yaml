@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/7032d125d2784094a58003ec5fe62e8e/artifacts
+end_time: 1756675391925
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 7032d125d2784094a58003ec5fe62e8e
+run_name: capricious-foal-133
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756675391333
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/src/mlruns/0/6d6b47592d914da7830bb1ff3eaece22/artifacts
+end_time: 1756683596983
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 6d6b47592d914da7830bb1ff3eaece22
+run_name: capricious-cub-54
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756683596402
+status: 3
+tags: []
+user_id: root

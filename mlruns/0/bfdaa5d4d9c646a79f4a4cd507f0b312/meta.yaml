@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/bfdaa5d4d9c646a79f4a4cd507f0b312/artifacts
+end_time: 1756676739649
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: bfdaa5d4d9c646a79f4a4cd507f0b312
+run_name: judicious-mink-174
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756676739069
+status: 3
+tags: []
+user_id: root

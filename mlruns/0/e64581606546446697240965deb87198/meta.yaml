@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/e64581606546446697240965deb87198/artifacts
+end_time: 1756678449618
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: e64581606546446697240965deb87198
+run_name: persistent-sloth-50
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756678449030
+status: 3
+tags: []
+user_id: root

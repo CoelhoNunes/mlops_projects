@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/492b06fa4c8b4dd98a8c49ea1648a447/artifacts
+end_time: 1756674507953
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 492b06fa4c8b4dd98a8c49ea1648a447
+run_name: rumbling-crane-551
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756674507385
+status: 3
+tags: []
+user_id: root

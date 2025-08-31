@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/76637dadb5ef43babacb259479848048/artifacts
+end_time: 1756674486058
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 76637dadb5ef43babacb259479848048
+run_name: likeable-mouse-440
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756674453557
+status: 3
+tags: []
+user_id: root

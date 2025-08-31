@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/aba30913bbdc46e3b5b62dd0a87cf3a1/artifacts
+end_time: 1756675653586
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: aba30913bbdc46e3b5b62dd0a87cf3a1
+run_name: persistent-kit-130
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756675620291
+status: 3
+tags: []
+user_id: root

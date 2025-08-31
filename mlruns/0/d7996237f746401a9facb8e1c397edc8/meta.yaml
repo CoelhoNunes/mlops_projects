@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/d7996237f746401a9facb8e1c397edc8/artifacts
+end_time: 1756681301126
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: d7996237f746401a9facb8e1c397edc8
+run_name: redolent-mole-758
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756681267907
+status: 3
+tags: []
+user_id: root

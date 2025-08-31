@@ -1,0 +1,14 @@
+artifact_uri: file:///mnt/c/Users/Coelh/OneDrive/Desktop/mlops_projects/mlruns/0/6ebb6bac81ba485490f7855553b1b130/artifacts
+end_time: 1756674207407
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 6ebb6bac81ba485490f7855553b1b130
+run_name: mysterious-lynx-199
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756674206818
+status: 3
+tags: []
+user_id: root
