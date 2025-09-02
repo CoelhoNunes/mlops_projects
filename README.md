@@ -1,11 +1,7 @@
 # MLOps Project
 
-<video src="https://github.com/user-attachments/assets/f6421722-ec7a-419b-a3f5-d4362dfee5c4" 
-       autoplay
-       loop
-       muted
-       playsinline
-       width="100%"></video>
+<video src="https://github.com/user-attachments/assets/2c35e3a6-d916-4359-aa57-608ee72badbc"
+autoplay loop muted playsinline style="width:100%"></video>
 
 ## Project Purpose — What this repo is for
 
@@ -171,6 +167,7 @@ mlops/
 - FastAPI for model serving
 - Docker and Kubernetes for deployment
 - Comprehensive testing and CI/CD setup
+
 
 
 
