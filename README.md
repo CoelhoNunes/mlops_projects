@@ -164,7 +164,3 @@ mlops/
 - FastAPI for model serving
 - Docker and Kubernetes for deployment
 - Comprehensive testing and CI/CD setup
-
-## License
-
-This project is licensed under the terms specified in the LICENSE file.
