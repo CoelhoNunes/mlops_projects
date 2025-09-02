@@ -1,0 +1,12 @@
+critical_issues: []
+dataset_name: dataset
+is_valid: false
+total_issues: 5
+validation_score: 50
+validation_timestamp: '2025-09-01T19:57:52.695255'
+warnings:
+- Column 'customer_id' has 100.0% unique values (potential ID column)
+- Column 'customer_unique_id' has 96.6% unique values (potential ID column)
+- Column 'customer_id' has high cardinality (100.0%)
+- Column 'customer_unique_id' has high cardinality (96.6%)
+- 'Target column ''customer_state'' shows severe class imbalance (ratio: 0.001)'

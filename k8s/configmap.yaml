@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mlops-config
+  namespace: mlops
+  labels:
+    app: mlops
+    component: config
+data:
+  # MLflow configuration
+  MLFLOW_TRACKING_URI: "http://mlflow-service:5000"
+  MLFLOW_EXPERIMENT_NAME: "production-mlops"
+  MLFLOW_REGISTRY_NAME: "mlops-registry"
+  
+  # Data configuration
+  MLOPS_DATA_PATH: "/data"
+  MLOPS_ARTIFACTS_PATH: "/artifacts"
+  MLOPS_TARGET_COLUMN: "target"
+  MLOPS_TASK_TYPE: "auto"
+  
+  # Model configuration
+  MLOPS_MODELS: "logreg,rf,xgboost,lightgbm,torch_mlp"
+  MLOPS_CV_FOLDS: "5"
+  MLOPS_OPTUNA_TRIALS: "50"
+  
+  # Training configuration
+  MLOPS_RANDOM_SEED: "42"
+  MLOPS_USE_AMP: "true"
+  MLOPS_BATCH_SIZE: "32"
+  MLOPS_EPOCHS: "100"
+  MLOPS_PATIENCE: "10"
+  
+  # Evaluation configuration
+  MLOPS_EVAL_METRICS: "accuracy,precision,recall,f1,roc_auc"
+  MLOPS_THRESHOLD_OPTIMIZATION: "true"
+  MLOPS_EXPLAINABILITY: "true"
+  
+  # Serving configuration
+  MLOPS_SERVE_PORT: "8000"
+  MLOPS_SERVE_HOST: "0.0.0.0"
+  MLOPS_SERVE_WORKERS: "4"
+  MLOPS_SERVE_TIMEOUT: "30"
+  
+  # Logging configuration
+  MLOPS_LOG_LEVEL: "INFO"
+  MLOPS_LOG_FORMAT: "json"
+  
+  # Feature engineering configuration
+  MLOPS_FEATURE_SELECTION: "true"
+  MLOPS_MAX_FEATURES: "100"
+  MLOPS_CATEGORICAL_ENCODING: "onehot"
+  MLOPS_NUMERIC_SCALING: "standard"
+  
+  # Model promotion rules
+  MLOPS_PROMOTION_F1_THRESHOLD: "0.8"
+  MLOPS_PROMOTION_ACCURACY_THRESHOLD: "0.85"
+  MLOPS_PROMOTION_ROC_AUC_THRESHOLD: "0.9"
+  
+  # Resource limits (for training jobs)
+  MLOPS_TRAIN_CPU_REQUEST: "1000m"
+  MLOPS_TRAIN_CPU_LIMIT: "2000m"
+  MLOPS_TRAIN_MEMORY_REQUEST: "2Gi"
+  MLOPS_TRAIN_MEMORY_LIMIT: "4Gi"
+  MLOPS_TRAIN_GPU_REQUEST: "1"
+  
+  # Resource limits (for serving)
+  MLOPS_SERVE_CPU_REQUEST: "500m"
+  MLOPS_SERVE_CPU_LIMIT: "1000m"
+  MLOPS_SERVE_MEMORY_REQUEST: "1Gi"
+  MLOPS_SERVE_MEMORY_LIMIT: "2Gi"
+  
+  # Health check configuration
+  MLOPS_HEALTH_CHECK_INTERVAL: "30s"
+  MLOPS_HEALTH_CHECK_TIMEOUT: "10s"
+  MLOPS_HEALTH_CHECK_FAILURE_THRESHOLD: "3"
+  MLOPS_HEALTH_CHECK_SUCCESS_THRESHOLD: "1"
+  
+  # Autoscaling configuration
+  MLOPS_HPA_MIN_REPLICAS: "2"
+  MLOPS_HPA_MAX_REPLICAS: "10"
+  MLOPS_HPA_TARGET_CPU_UTILIZATION: "70"
+  MLOPS_HPA_TARGET_MEMORY_UTILIZATION: "80"
+  
+  # Monitoring configuration
+  MLOPS_METRICS_PORT: "8000"
+  MLOPS_METRICS_PATH: "/metrics"
+  MLOPS_PROMETHEUS_ENABLED: "true"
+  
+  # Security configuration
+  MLOPS_NON_ROOT_USER: "true"
+  MLOPS_READ_ONLY_ROOT_FILESYSTEM: "false"
+  MLOPS_ALLOW_PRIVILEGE_ESCALATION: "false"
+  
+  # Backup configuration
+  MLOPS_BACKUP_ENABLED: "true"
+  MLOPS_BACKUP_SCHEDULE: "0 2 * * *"
+  MLOPS_BACKUP_RETENTION_DAYS: "30"
+  
+  # Cleanup configuration
+  MLOPS_CLEANUP_ENABLED: "true"
+  MLOPS_CLEANUP_SCHEDULE: "0 3 * * *"
+  MLOPS_CLEANUP_ARTIFACT_AGE_DAYS: "90"
+  MLOPS_CLEANUP_MLRUNS_AGE_DAYS: "180"

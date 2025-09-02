@@ -1,0 +1,5 @@
+- Column 'customer_id' has 100.0% unique values (potential ID column)
+- Column 'customer_unique_id' has 96.6% unique values (potential ID column)
+- Column 'customer_id' has high cardinality (100.0%)
+- Column 'customer_unique_id' has high cardinality (96.6%)
+- Target column 'customer_state' shows severe class imbalance (ratio: 0.001)

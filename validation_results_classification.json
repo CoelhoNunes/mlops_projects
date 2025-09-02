@@ -1,0 +1,174 @@
+{
+  "classification_basic_info": {
+    "shape": [
+      99441,
+      5
+    ],
+    "memory_usage_mb": 26.58640480041504,
+    "columns": [
+      "customer_id",
+      "customer_unique_id",
+      "customer_zip_code_prefix",
+      "customer_city",
+      "customer_state"
+    ],
+    "dtypes": {
+      "customer_id": "object",
+      "customer_unique_id": "object",
+      "customer_zip_code_prefix": "int64",
+      "customer_city": "object",
+      "customer_state": "object"
+    },
+    "has_duplicates": "False",
+    "duplicate_count": "0"
+  },
+  "classification_schema": {
+    "customer_id": {
+      "dtype": "object",
+      "null_count": "0",
+      "null_percentage": 0.0,
+      "unique_count": 99441,
+      "unique_percentage": 100.0
+    },
+    "customer_unique_id": {
+      "dtype": "object",
+      "null_count": "0",
+      "null_percentage": 0.0,
+      "unique_count": 96096,
+      "unique_percentage": 96.63619633752677
+    },
+    "customer_zip_code_prefix": {
+      "dtype": "int64",
+      "null_count": "0",
+      "null_percentage": 0.0,
+      "unique_count": 14994,
+      "unique_percentage": 15.078287627839623
+    },
+    "customer_city": {
+      "dtype": "object",
+      "null_count": "0",
+      "null_percentage": 0.0,
+      "unique_count": 4119,
+      "unique_percentage": 4.142154644462546
+    },
+    "customer_state": {
+      "dtype": "object",
+      "null_count": "0",
+      "null_percentage": 0.0,
+      "unique_count": 27,
+      "unique_percentage": 0.027151778441487917
+    }
+  },
+  "classification_quality": {
+    "constant_columns": [],
+    "high_cardinality_categorical": [
+      {
+        "column": "customer_id",
+        "unique_ratio": 1.0,
+        "unique_count": 99441
+      },
+      {
+        "column": "customer_unique_id",
+        "unique_ratio": 0.9663619633752677,
+        "unique_count": 96096
+      }
+    ],
+    "numeric_issues": []
+  },
+  "classification_target": {
+    "dtype": "object",
+    "null_count": "0",
+    "null_percentage": 0.0,
+    "task_type": "classification",
+    "unique_values": 27,
+    "class_distribution": {
+      "SP": 41746,
+      "RJ": 12852,
+      "MG": 11635,
+      "RS": 5466,
+      "PR": 5045,
+      "SC": 3637,
+      "BA": 3380,
+      "DF": 2140,
+      "ES": 2033,
+      "GO": 2020,
+      "PE": 1652,
+      "CE": 1336,
+      "PA": 975,
+      "MT": 907,
+      "MA": 747,
+      "MS": 715,
+      "PB": 536,
+      "PI": 495,
+      "RN": 485,
+      "AL": 413,
+      "SE": 350,
+      "TO": 280,
+      "RO": 253,
+      "AM": 148,
+      "AC": 81,
+      "AP": 68,
+      "RR": 46
+    },
+    "class_imbalance_ratio": {
+      "is_imbalanced": "True",
+      "imbalance_ratio": 0.0011019019786326833,
+      "minority_class": "RR",
+      "majority_class": "SP",
+      "minority_count": "46",
+      "majority_count": "41746",
+      "severity": "severe",
+      "total_samples": 99441,
+      "class_distribution": {
+        "AC": "81",
+        "AL": "413",
+        "AM": "148",
+        "AP": "68",
+        "BA": "3380",
+        "CE": "1336",
+        "DF": "2140",
+        "ES": "2033",
+        "GO": "2020",
+        "MA": "747",
+        "MG": "11635",
+        "MS": "715",
+        "MT": "907",
+        "PA": "975",
+        "PB": "536",
+        "PE": "1652",
+        "PI": "495",
+        "PR": "5045",
+        "RJ": "12852",
+        "RN": "485",
+        "RO": "253",
+        "RR": "46",
+        "RS": "5466",
+        "SC": "3637",
+        "SE": "350",
+        "SP": "41746",
+        "TO": "280"
+      }
+    }
+  },
+  "classification_leakage": {
+    "indicators": [],
+    "high_correlation_threshold": 0.95,
+    "distribution_similarity_threshold": 0.1
+  },
+  "classification_statistics": {
+    "summary_statistics": {
+      "customer_zip_code_prefix": {
+        "count": 99441.0,
+        "mean": 35137.47458291851,
+        "std": 29797.938996206118,
+        "min": 1003.0,
+        "25%": 11347.0,
+        "50%": 24416.0,
+        "75%": 58900.0,
+        "max": 99990.0
+      }
+    },
+    "correlation_matrix": null,
+    "missing_data_pattern": null
+  }
+}

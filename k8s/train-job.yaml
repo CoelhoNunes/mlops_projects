@@ -1,0 +1,77 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mlops-training-job
+  labels:
+    app: mlops
+    component: training
+spec:
+  backoffLimit: 3
+  restartPolicy: Never
+  template:
+    metadata:
+      labels:
+        app: mlops
+        component: training
+    spec:
+      containers:
+      - name: trainer
+        image: mlops-trainer:latest
+        imagePullPolicy: IfNotPresent
+        command: ["python", "-m", "mlops.orchestration.cli", "train"]
+        env:
+        - name: MLFLOW_TRACKING_URI
+          value: "http://mlflow-service:5000"
+        - name: MLOPS_SEED
+          value: "42"
+        - name: MLOPS_USE_AMP
+          value: "true"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "8Gi"
+            cpu: "4000m"
+            # Uncomment for GPU training
+            # nvidia.com/gpu: 1
+        volumeMounts:
+        - name: data-volume
+          mountPath: /app/data
+        - name: artifacts-volume
+          mountPath: /app/artifacts
+        - name: mlflow-volume
+          mountPath: /app/mlruns
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: mlops-data-pvc
+      - name: artifacts-volume
+        persistentVolumeClaim:
+          claimName: mlops-artifacts-pvc
+      - name: mlflow-volume
+        persistentVolumeClaim:
+          claimName: mlflow-pvc
+      restartPolicy: Never
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mlops-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mlops-artifacts-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi

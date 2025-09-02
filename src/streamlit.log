@@ -1,8 +1,0 @@
-nohup: ignoring input
-
-  You can now view your Streamlit app in your browser.
-
-  Local URL: http://localhost:8501
-  Network URL: http://172.27.132.14:8501
-
-[33mIn a future release, the default Python package installer used by ZenML to build container images for your containerized pipelines will change from 'pip' to 'uv'. To maintain current behavior, you can explicitly set [0m[38;5;105mpython_package_installer=PythonPackageInstaller.PIP[33m in your DockerSettings.[0m
