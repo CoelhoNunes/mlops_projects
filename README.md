@@ -6,7 +6,7 @@ autoplay loop muted playsinline style="width:100%"></video>
 ## Project Purpose — What/Why
 
 Build a **production-grade, MLflow-centric MLOps template** that turns raw CSVs into a **trained, registered, and served model** with solid engineering around it.  
-It proves you can: ingest & validate data, engineer features, train & tune multiple models (including **deep learning**), log & compare experiments in **MLflow**, **register** the best model, and **serve** it via a FastAPI microservice that runs locally, in Docker, and on Kubernetes—with CI, tests, and clear docs.
+The goal: ingest & validate data, engineer features, train & tune multiple models (including **deep learning**), log & compare experiments in **MLflow**, **register** the best model, and **serve** it via a FastAPI microservice that runs locally, in Docker, and on Kubernetes—with CI, tests, and clear docs.
 
 **Elevator pitch (1-liner):**  
 "An end-to-end, **MLflow-only** MLOps stack that trains, registers, and serves tabular ML models (classic + deep learning) with reproducibility, observability, and K8s-ready deployment."
