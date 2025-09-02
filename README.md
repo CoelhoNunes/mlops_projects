@@ -3,7 +3,7 @@
 <video src="https://github.com/user-attachments/assets/2c35e3a6-d916-4359-aa57-608ee72badbc"
 autoplay loop muted playsinline style="width:100%"></video>
 
-## Project Purpose — What this repo is for
+## Project Purpose — What/Why
 
 Build a **production-grade, MLflow-centric MLOps template** that turns raw CSVs into a **trained, registered, and served model** with solid engineering around it.  
 It proves you can: ingest & validate data, engineer features, train & tune multiple models (including **deep learning**), log & compare experiments in **MLflow**, **register** the best model, and **serve** it via a FastAPI microservice that runs locally, in Docker, and on Kubernetes—with CI, tests, and clear docs.
@@ -152,6 +152,7 @@ mlops/
 - FastAPI for model serving
 - Docker and Kubernetes for deployment
 - Comprehensive testing and CI/CD setup
+
 
 
 
