@@ -4,6 +4,7 @@
   <video autoplay loop muted playsinline style="max-width:960px; width:100%; border-radius:12px">
     <source src="https://github.com/user-attachments/assets/9beacfbc-b9f3-43dc-b76f-76ad1d3cee9a" type="video/mp4" />
   </video>
+</div> 
 
 ## Project Purpose — What this repo is for
 
@@ -169,5 +170,6 @@ mlops/
 - FastAPI for model serving
 - Docker and Kubernetes for deployment
 - Comprehensive testing and CI/CD setup
+
 
 
