@@ -1,5 +1,7 @@
 # MLOps Project
 
+https://github.com/user-attachments/assets/9beacfbc-b9f3-43dc-b76f-76ad1d3cee9a
+
 ## Project Purpose — What this repo is for
 
 Build a **production-grade, MLflow-centric MLOps template** that turns raw CSVs into a **trained, registered, and served model** with solid engineering around it.  
@@ -164,3 +166,4 @@ mlops/
 - FastAPI for model serving
 - Docker and Kubernetes for deployment
 - Comprehensive testing and CI/CD setup
+
