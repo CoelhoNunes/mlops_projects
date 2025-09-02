@@ -13,7 +13,7 @@ It proves you can: ingest & validate data, engineer features, train & tune multi
 
 ---
 
-## What it creates (concrete outputs)
+## What it creates
 
 1) **ML artifacts**
    - MLflow experiment runs (params, metrics, plots, artifacts)
@@ -33,7 +33,7 @@ It proves you can: ingest & validate data, engineer features, train & tune multi
 
 ---
 
-## What it demonstrates (skills aligned to the role)
+## What it demonstrates
 
 - **Kubernetes**: batch training as a Job with retries/backoff; serving as a Deployment with liveness/readiness; resources & optional GPU hints
 - **Python scripting**: composable pipelines (data → features → train → evaluate → register → serve)
@@ -47,7 +47,7 @@ It proves you can: ingest & validate data, engineer features, train & tune multi
 
 ---
 
-## Core ML pipeline (now with deep learning)
+## Core ML pipeline
 
 - **Data**: CSV loader, schema & sanity checks, class imbalance report
 - **Features**: sklearn `ColumnTransformer` (numeric: impute+scale; categorical: impute+OHE)
@@ -62,7 +62,7 @@ It proves you can: ingest & validate data, engineer features, train & tune multi
 
 ---
 
-## Add-on ML enhancements (extend to show more depth)
+## Add-on ML enhancements
 
 ### Modeling & generalization
 - **Ensembles** (stacking/blending of top-k candidates)
@@ -92,21 +92,6 @@ It proves you can: ingest & validate data, engineer features, train & tune multi
 - **Canary/shadow** serving: compare responses & log deltas (no user impact)
 - **Simple alarms**: input drift / error-rate thresholds; emit metrics/logs
 - **Data contracts**: strict schema (types, ranges, enums); hard-fail violations
-
-(Each add-on is config-gated and logged to MLflow with metrics & artifacts.)
-
----
-
-## Repo hygiene & legacy cleanup (HARD)
-
-This project enforces **no dead code** and **MLflow-only** tracking.
-
-- Remove any legacy trackers/frameworks (ZenML, W&B, Neptune, DVC, Airflow/Prefect/Argo), unused notebooks/scripts/configs.
-- Keep only files used by the new CLI, training, evaluation, registry, and serving paths.
-- CI runs `ruff/black/mypy/pytest` and a prune step (e.g., `scripts/prune_repo.sh`) that:
-  - Greps for forbidden trackers and fails if found
-  - Uses `vulture` / `ruff` rules to catch unused code/imports
-  - Deletes/flags orphaned dirs (`old/`, `legacy/`, `experiments/`) not referenced by Make/CLI
 
 ---
 
@@ -167,6 +152,7 @@ mlops/
 - FastAPI for model serving
 - Docker and Kubernetes for deployment
 - Comprehensive testing and CI/CD setup
+
 
 
 
