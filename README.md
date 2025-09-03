@@ -41,7 +41,7 @@ A **production-ready, MLflow-centric MLOps template** that demonstrates end-to-e
 
 ```bash
 # 1) Setup (Python 3.11+)
-pip install -r requirements.txt
+pip install -r config/requirements.txt
 
 # 2) Run training locally
 python -m src.train
@@ -50,7 +50,7 @@ python -m src.train
 python -m src.train --smoke
 
 # 4) Build Docker image
-docker build -f Dockerfile.train --target cpu-trainer --platform linux/amd64 .
+docker build -f deployment/docker/Dockerfile.train --target cpu-trainer --platform linux/amd64 .
 
 # 5) Run training in Docker
 docker run --rm -v $(pwd)/mlruns:/app/mlruns your-image:latest
@@ -67,14 +67,47 @@ The project provides a simple training script with the following options:
 ## Project Structure
 
 ```
-├── src/
+├── README.md                    # This file - project overview
+├── LICENSE                      # Project license
+├── Makefile                     # Build and automation commands
+├── .gitignore                   # Git ignore patterns
+├── .github/workflows/           # CI/CD workflows
+├── src/                         # Source code
 │   ├── __init__.py
-│   └── train.py          # Main training script
-├── requirements.txt       # Python dependencies
-├── Dockerfile.train      # Multi-stage Docker build
-├── .github/workflows/    # CI/CD workflows
-├── k8s/                  # Kubernetes manifests
-└── README.md
+│   ├── train.py                 # Main training script
+│   └── train_customer.py        # Customer classification training
+├── tests/                       # Test files
+├── scripts/                     # Utility scripts
+├── docs/                        # Documentation
+│   ├── guides/                  # Setup and usage guides
+│   ├── architecture/            # Architecture documentation
+│   ├── ADRs/                    # Architecture Decision Records
+│   ├── IMPLEMENTATION_SUMMARY.md
+│   ├── REFACTORING_SUMMARY.md
+│   ├── ARCHITECTURE.md
+│   └── CHANGELOG.md
+├── config/                      # Configuration files
+│   ├── requirements.txt         # Python dependencies
+│   ├── pyproject.toml          # Project configuration
+│   └── pytest.ini              # Test configuration
+├── data/                        # Datasets
+│   └── customer_dataset.csv     # Customer classification dataset
+├── validation/                  # Data validation results
+│   ├── validation_issues_classification.txt
+│   ├── validation_results_classification.json
+│   └── validation_summary_dataset.yaml
+├── assets/                      # Media and visual assets
+│   ├── images/                  # Images and plots
+│   │   └── confusion_matrix.png
+│   └── videos/                  # Video demonstrations
+│       └── MLflow.mp4
+├── deployment/                  # Deployment configurations
+│   ├── docker/                  # Docker configurations
+│   │   ├── Dockerfile.train     # Training container
+│   │   └── Dockerfile.serve     # Serving container
+│   └── k8s/                     # Kubernetes manifests
+├── mlruns/                      # MLflow experiment tracking
+└── venv/                        # Virtual environment (gitignored)
 ```
 
 ## Requirements
@@ -94,10 +127,10 @@ The project provides two Docker targets:
 
 ```bash
 # Build CPU image (default)
-docker build -f Dockerfile.train --target cpu-trainer .
+docker build -f deployment/docker/Dockerfile.train --target cpu-trainer .
 
 # Build GPU image
-docker build -f Dockerfile.train --target gpu-trainer .
+docker build -f deployment/docker/Dockerfile.train --target gpu-trainer .
 ```
 
 ## CI/CD
@@ -112,7 +145,7 @@ GitHub Actions automatically:
 
 ```bash
 # Install dependencies
-pip install -r requirements.txt
+pip install -r config/requirements.txt
 
 # Run tests
 pytest tests/
