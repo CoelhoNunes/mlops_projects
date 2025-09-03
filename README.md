@@ -1,15 +1,9 @@
 # MLOps Project
 
-<video src="https://github.com/user-attachments/assets/2c35e3a6-d916-4359-aa57-608ee72badbc"
-autoplay loop muted playsinline style="width:100%"></video>
+A **production-ready, MLflow-centric MLOps template** that demonstrates end-to-end machine learning workflows with Docker containerization and CI/CD.
 
-## Project Purpose — What/Why
-
-Build a **production-grade, MLflow-centric MLOps template** that turns raw CSVs into a **trained, registered, and served model** with solid engineering around it.  
-The goal: ingest & validate data, engineer features, train & tune multiple models (including **deep learning**), log & compare experiments in **MLflow**, **register** the best model, and **serve** it via a FastAPI microservice that runs locally, in Docker, and on Kubernetes—with CI, tests, and clear docs.
-
-**Elevator pitch (1-liner):**  
-"An end-to-end, **MLflow-only** MLOps stack that trains, registers, and serves tabular ML models (classic + deep learning) with reproducibility, observability, and K8s-ready deployment."
+**Elevator pitch:**  
+"An end-to-end, **MLflow-only** MLOps stack that trains models, logs experiments, and deploys via Docker with reproducibility and observability."
 
 ---
 
@@ -17,81 +11,29 @@ The goal: ingest & validate data, engineer features, train & tune multiple model
 
 1) **ML artifacts**
    - MLflow experiment runs (params, metrics, plots, artifacts)
-   - A **registered model** in the MLflow Model Registry (Staging/Production)
-   - A documented **model card** plus validation & drift reports
+   - Trained models with preprocessing pipelines
+   - Evaluation reports and visualizations
 
 2) **Services & runtime**
-   - **FastAPI** prediction service (`/healthz`, `/predict`), containerized
-   - **Docker images** for training and serving
-   - **Kubernetes** manifests (Job for training, Deployment/Service for serving, HPA-ready)
-   - Optional **local MLflow server** script
+   - **Docker images** for training (CPU and GPU variants)
+   - **Kubernetes** manifests for deployment
+   - **CI/CD** workflows for automated testing and building
 
 3) **Engineering scaffolding**
-   - Structured **repo layout**, typed Python 3.11+, docstrings & clean comments
-   - **Typer CLI**: `data-validate`, `train`, `evaluate`, `register`, `promote`, `serve`, `batch-predict`
-   - **CI** (ruff, black, mypy, pytest ~80% coverage), **Makefile**, and developer docs
-
----
-
-## What it demonstrates
-
-- **Kubernetes**: batch training as a Job with retries/backoff; serving as a Deployment with liveness/readiness; resources & optional GPU hints
-- **Python scripting**: composable pipelines (data → features → train → evaluate → register → serve)
-- **Model serving**: FastAPI REST (optionally gRPC), Pydantic validation, Prometheus-friendly metrics
-- **ML workflows**: train/eval/registry flows, model versioning, promotion gates, signed/model-signatured artifacts
-- **ML metadata**: MLflow autolog + custom logging of validations, plots, model card, signature & input example
-- **Linux/containers**: slim multi-stage Dockerfiles (non-root), healthchecks
-- **CI/CD**: formatting, linting, typing, tests, and image build/push on tags
-- **Reliability**: deterministic seeds, config-first design, graceful fallbacks, clear logs
-- **Deep Learning**: PyTorch tabular MLP with AMP, early stopping, scheduler, class-imbalance handling, TorchScript/ONNX export
+   - Structured **repo layout**, Python 3.11+, clean code
+   - **Simple training pipeline** with sklearn digits dataset
+   - **Docker multi-stage builds** with CPU-first approach
 
 ---
 
 ## Core ML pipeline
 
-- **Data**: CSV loader, schema & sanity checks, class imbalance report
-- **Features**: sklearn `ColumnTransformer` (numeric: impute+scale; categorical: impute+OHE)
-- **Modeling (classic)**: LogReg, RandomForest (+ gated XGBoost/LightGBM if installed)
-- **Modeling (deep learning)**: **PyTorch MLP** for tabular data (sklearn-compatible estimator) with:
-  - Mixed precision (AMP) toggle, early stopping, ReduceLROnPlateau, gradient clipping
-  - Class weights for imbalance; GPU if available; TorchScript + ONNX export (if onnx present)
-- **Tuning**: Optuna-based search per model; stratified K-fold for classification; time-aware split toggle
-- **Evaluation**: holdout metrics (classification & regression), confusion matrix/residuals, SHAP summary (config-gated)
-- **Registry & Promotion**: rules-based stage transitions (e.g., F1 ≥ threshold; or RMSE ≤ threshold)
-- **Serving**: Production model loaded from MLflow registry; batch prediction support via CLI
-
----
-
-## Add-on ML enhancements
-
-### Modeling & generalization
-- **Ensembles** (stacking/blending of top-k candidates)
-- **Calibration** (Platt/Isotonic) + Brier score & reliability curves
-- **Threshold optimization** (F1/Fβ or cost-sensitive utility)
-- **Cost-sensitive metrics** (custom utility matrices)
-- **Feature selection** (mutual information / permutation importance)
-- **Class imbalance** (class weights vs SMOTE; compare uplift)
-- **Fairness checks** (if sensitive groups exist): DP/EO gaps, per-group metrics
-
-### Time & drift robustness
-- **Time-aware CV** (rolling splits)
-- **Data/prediction drift**: PSI/JS divergence logged as drift dashboard artifacts
-- **Adversarial validation**: train-vs-holdout classifier to detect leakage/mismatch
-
-### Explainability & transparency
-- **Global**: SHAP summary/bar; permutation importance
-- **Local**: SHAP force (small sample); optional per-prediction reason codes in serving
-- **Model card++**: ethical risks, failure modes, data coverage, monitoring checklist
-
-### Performance & deployability
-- **Latency benchmarking**: offline timings + p95 in serving
-- **Model compression**: ONNX export + simple quantization (when compatible)
-- **Batch vs online**: `batch-predict` writes parquet with predictions + confidences
-
-### Monitoring & operations
-- **Canary/shadow** serving: compare responses & log deltas (no user impact)
-- **Simple alarms**: input drift / error-rate thresholds; emit metrics/logs
-- **Data contracts**: strict schema (types, ranges, enums); hard-fail violations
+- **Data**: Load sklearn digits dataset (handwritten digit classification)
+- **Preprocessing**: StandardScaler for feature normalization
+- **Modeling**: RandomForestClassifier with configurable hyperparameters
+- **Evaluation**: Accuracy metrics, confusion matrix, classification report
+- **Logging**: Complete MLflow integration (params, metrics, artifacts, models)
+- **Serving**: Docker images ready for deployment
 
 ---
 
@@ -99,64 +41,103 @@ The goal: ingest & validate data, engineer features, train & tune multiple model
 
 ```bash
 # 1) Setup (Python 3.11+)
-make setup
+pip install -r requirements.txt
 
-# 2) Point MLflow to local store (default is ./mlruns)
-export MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI:-"./mlruns"}
+# 2) Run training locally
+python -m src.train
 
-# 3) Configure target column and task in config if needed
-#    mlops/config/settings.yaml  (or via env: MLOPS_TARGET, MLOPS_TASK)
+# 3) Run smoke test (fast, small dataset)
+python -m src.train --smoke
 
-# 4) Validate data, train models (classic + PyTorch), register best
-make train
+# 4) Build Docker image
+docker build -f Dockerfile.train --target cpu-trainer --platform linux/amd64 .
 
-# 5) Evaluate on holdout, log artifacts (plots, model card), apply promotion rules
-make evaluate
-
-# 6) Serve the Production model (FastAPI)
-make serve
-# then in another shell:
-curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d '{"rows":[{"feature1":1.2,"feature2":"A", "...": "..."}]}'
+# 5) Run training in Docker
+docker run --rm -v $(pwd)/mlruns:/app/mlruns your-image:latest
 ```
 
 ## Available Commands
 
-The project provides a comprehensive CLI with the following commands:
+The project provides a simple training script with the following options:
 
-- **`data-validate`**: Validate data quality and generate reports
-- **`train`**: Train models with hyperparameter optimization
-- **`evaluate`**: Evaluate trained models on test set
-- **`register`**: Register best model to MLflow Model Registry
-- **`promote`**: Promote model to specified stage in MLflow Model Registry
-- **`serve`**: Start model serving server
-- **`batch-predict`**: Run batch predictions on input data
-- **`info`**: Display project information and configuration
+- **`python -m src.train`**: Run full training pipeline
+- **`python -m src.train --smoke`**: Run fast smoke test
+- **`python -m src.train --mlflow-tracking-uri <uri>`**: Specify MLflow tracking URI
 
 ## Project Structure
 
 ```
-mlops/
-├── config/          # Configuration files
-├── data/           # Data loading, validation, and feature engineering
-├── modeling/       # Model training, evaluation, and promotion
-├── serving/        # Model serving and API
-├── orchestration/  # CLI and workflow orchestration
-└── utils/          # Utility functions and helpers
+├── src/
+│   ├── __init__.py
+│   └── train.py          # Main training script
+├── requirements.txt       # Python dependencies
+├── Dockerfile.train      # Multi-stage Docker build
+├── .github/workflows/    # CI/CD workflows
+├── k8s/                  # Kubernetes manifests
+└── README.md
 ```
 
 ## Requirements
 
 - Python 3.11+
-- MLflow for experiment tracking and model registry
-- PyTorch for deep learning models
-- FastAPI for model serving
-- Docker and Kubernetes for deployment
-- Comprehensive testing and CI/CD setup
+- MLflow for experiment tracking
+- scikit-learn for ML algorithms
+- Docker for containerization
+- GitHub Actions for CI/CD
 
+## Docker Builds
 
+The project provides two Docker targets:
 
+- **`cpu-trainer`** (default): CPU-only training image
+- **`gpu-trainer`**: GPU-enabled training image (CUDA 12.1, Ubuntu 22.04)
 
+```bash
+# Build CPU image (default)
+docker build -f Dockerfile.train --target cpu-trainer .
 
+# Build GPU image
+docker build -f Dockerfile.train --target gpu-trainer .
+```
 
+## CI/CD
 
+GitHub Actions automatically:
+1. Tests the training pipeline locally
+2. Builds and pushes CPU training images on main/tags
+3. Optionally builds GPU images via manual workflow dispatch
+4. Runs security scans and sends optional Slack notifications
 
+## Local Development
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run tests
+pytest tests/
+
+# Format code
+ruff check src/
+black src/
+
+# Run training
+python -m src.train --smoke
+```
+
+## MLflow Integration
+
+The training pipeline automatically:
+- Creates experiments and runs
+- Logs hyperparameters and metrics
+- Saves trained models and preprocessing pipelines
+- Stores evaluation artifacts (confusion matrix, feature importance)
+- Tracks all experiments in local `mlruns/` directory
+
+## Kubernetes Deployment
+
+Use the provided manifests in `k8s/` to deploy:
+- Training jobs for batch model training
+- Model serving deployments
+- MLflow tracking server
+- ConfigMaps and secrets for configuration

@@ -1,1 +1,1 @@
-# Tests package for MLOps project
+# Tests package
