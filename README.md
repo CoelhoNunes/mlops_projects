@@ -1,9 +1,7 @@
 # MLOps Project
 
 A **production-ready, MLflow-centric MLOps template** that demonstrates end-to-end machine learning workflows with Docker containerization and CI/CD.
-
-**Elevator pitch:**  
-"An end-to-end, **MLflow-only** MLOps stack that trains models, logs experiments, and deploys via Docker with reproducibility and observability."
+ **MLflow-only** MLOps stack that trains models, logs experiments, and deploys via Docker with reproducibility and observability."
 
 ---
 
@@ -174,3 +172,4 @@ Use the provided manifests in `k8s/` to deploy:
 - Model serving deployments
 - MLflow tracking server
 - ConfigMaps and secrets for configuration
+
