@@ -199,24 +199,26 @@ jobs:
     needs: [build-cpu-image, build-gpu-image, security-scan]
     if: always()
     name: Notify Results
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     
     steps:
     - name: Notify on failure
-      if: ${{ failure() && secrets.SLACK_WEBHOOK_URL != '' }}
+      if: ${{ failure() && env.SLACK_WEBHOOK_URL != '' }}
       uses: 8398a7/action-slack@v3
       with:
         status: failure
         text: 'Docker build failed for ${{ github.repository }}'
       env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
       continue-on-error: true
         
     - name: Notify on success
-      if: ${{ success() && secrets.SLACK_WEBHOOK_URL != '' }}
+      if: ${{ success() && env.SLACK_WEBHOOK_URL != '' }}
       uses: 8398a7/action-slack@v3
       with:
         status: success
         text: 'Docker build succeeded for ${{ github.repository }}'
       env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
       continue-on-error: true
