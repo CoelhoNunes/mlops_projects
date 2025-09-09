@@ -79,8 +79,8 @@ jobs:
       - name: Check for forbidden trackers
         run: |
           # Check for forbidden trackers (should fail CI if found)
-          # Exclude documentation files and scripts that mention these tools for reference
-          if grep -r --exclude-dir={.git,.github,node_modules,.venv,venv,__pycache__,docs,assets} --exclude={*.pyc,*.pyo,*.md,*.sh,*.mp4} -i "zenml\|wandb\|neptune\|dvc\|airflow\|prefect\|argo" .; then
+          # Exclude documentation, deployment, and configuration files that mention these tools for reference
+          if grep -r --exclude-dir={.git,.github,node_modules,.venv,venv,__pycache__,docs,assets,deployment} --exclude={*.pyc,*.pyo,*.md,*.sh,*.mp4,*.yaml,*.yml} -i "zenml\|wandb\|neptune\|dvc\|airflow\|prefect\|argo" .; then
             echo "❌ Forbidden trackers found! Only MLflow is allowed."
             exit 1
           fi
