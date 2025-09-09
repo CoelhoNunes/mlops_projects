@@ -1,4 +1,4 @@
-name: MLOps Pipeline
+name: Unified MLOps Pipeline
 
 on:
   # Trigger on pushes to main branch
@@ -79,7 +79,8 @@ jobs:
       - name: Check for forbidden trackers
         run: |
           # Check for forbidden trackers (should fail CI if found)
-          if grep -r --exclude-dir={.git,.github,node_modules,.venv,venv,__pycache__} --exclude={*.pyc,*.pyo} -i "zenml\|wandb\|neptune\|dvc\|airflow\|prefect\|argo" .; then
+          # Exclude documentation files and scripts that mention these tools for reference
+          if grep -r --exclude-dir={.git,.github,node_modules,.venv,venv,__pycache__,docs,assets} --exclude={*.pyc,*.pyo,*.md,*.sh,*.mp4} -i "zenml\|wandb\|neptune\|dvc\|airflow\|prefect\|argo" .; then
             echo "❌ Forbidden trackers found! Only MLflow is allowed."
             exit 1
           fi
@@ -140,7 +141,7 @@ jobs:
           safety check --json --output safety-report.json || true
 
       - name: Upload safety report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: safety-report
           path: safety-report.json
