@@ -489,14 +489,15 @@ def test_engineer_features_function():
         }
     )
 
-    # Test feature engineering - function returns only DataFrame, not tuple
-    result_df = src.train_customer.engineer_features(test_df)
+    # Test feature engineering - function returns tuple (DataFrame, Dict)
+    result_df, feature_info = src.train_customer.engineer_features(test_df)
 
     # Check that new features were created
     assert "zip_code_numeric" in result_df.columns
     assert "region" in result_df.columns
     assert "city_length" in result_df.columns
     assert "city_word_count" in result_df.columns
+    assert isinstance(feature_info, dict)
 
 
 def test_customer_split_data_function():
@@ -592,12 +593,20 @@ def test_train_models_function():
         mock_pipeline.named_steps = {"classifier": MagicMock()}
         mock_create_pipeline.return_value = mock_pipeline
 
-        # Mock optuna study
-        mock_study = MagicMock()
-        mock_study.optimize.return_value = None
-        mock_study.best_params = {"n_estimators": 100, "max_depth": 10}
-        mock_study.best_value = 0.85
-        mock_create_study.return_value = mock_study
+        # Mock optuna study for Random Forest
+        mock_study_rf = MagicMock()
+        mock_study_rf.optimize.return_value = None
+        mock_study_rf.best_params = {"n_estimators": 100, "max_depth": 10}
+        mock_study_rf.best_value = 0.85
+
+        # Mock optuna study for Logistic Regression
+        mock_study_lr = MagicMock()
+        mock_study_lr.optimize.return_value = None
+        mock_study_lr.best_params = {"C": 1.0, "penalty": "l2"}
+        mock_study_lr.best_value = 0.82
+
+        # Return different studies for different calls
+        mock_create_study.side_effect = [mock_study_rf, mock_study_lr]
 
         # Mock objective function to return a float
         mock_objective.return_value = 0.85
@@ -694,6 +703,8 @@ def test_customer_log_to_mlflow_function():
     training_results = {
         "random_forest": {"val_score": 0.85, "params": {"n_estimators": 100}},
         "logistic_regression": {"val_score": 0.82, "params": {"penalty": "l2"}},
+        "best_model_name": "random_forest",
+        "best_score": 0.85,
     }
     evaluation_results = {
         "test_accuracy": 0.84,
