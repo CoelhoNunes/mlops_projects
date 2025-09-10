@@ -122,7 +122,7 @@ class TestConfig:
           tracking_uri: "http://localhost:5000"
         """
 
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
             f.write(yaml_content)
             yaml_path = f.name
 
@@ -157,7 +157,7 @@ class TestConfig:
         config.data.data_path = "./test/path/*.csv"
         config.models.roster = ["test_model"]
 
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
             yaml_path = f.name
 
         try:

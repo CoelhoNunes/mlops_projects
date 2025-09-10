@@ -80,14 +80,16 @@ class TestEndToEndPipeline:
         synthetic_data.to_csv(data_path, index=False)
 
         # Mock MLflow to avoid actual tracking server
-        with patch('mlflow.set_tracking_uri'), \
-             patch('mlflow.set_experiment'), \
-             patch('mlflow.start_run'), \
-             patch('mlflow.log_params'), \
-             patch('mlflow.log_metrics'), \
-             patch('mlflow.log_artifacts'), \
-             patch('mlflow.log_model'), \
-             patch('mlflow.end_run'):
+        with (
+            patch("mlflow.set_tracking_uri"),
+            patch("mlflow.set_experiment"),
+            patch("mlflow.start_run"),
+            patch("mlflow.log_params"),
+            patch("mlflow.log_metrics"),
+            patch("mlflow.log_artifacts"),
+            patch("mlflow.log_model"),
+            patch("mlflow.end_run"),
+        ):
 
             # 1. Data Loading
             loader = DataLoader(config)
@@ -145,7 +147,7 @@ class TestEndToEndPipeline:
             assert "model_card" in evaluation_results
 
             # 6. Model Registration (Mock)
-            with patch('mlflow.register_model') as mock_register:
+            with patch("mlflow.register_model") as mock_register:
                 promoter = ModelPromoter(config)
                 registration_result = promoter.register_model(
                     training_results["best_model"],
@@ -217,14 +219,16 @@ class TestEndToEndPipeline:
         synthetic_data.to_csv(data_path, index=False)
 
         # Mock MLflow
-        with patch('mlflow.set_tracking_uri'), \
-             patch('mlflow.set_experiment'), \
-             patch('mlflow.start_run'), \
-             patch('mlflow.log_params'), \
-             patch('mlflow.log_metrics'), \
-             patch('mlflow.log_artifacts'), \
-             patch('mlflow.log_model'), \
-             patch('mlflow.end_run'):
+        with (
+            patch("mlflow.set_tracking_uri"),
+            patch("mlflow.set_experiment"),
+            patch("mlflow.start_run"),
+            patch("mlflow.log_params"),
+            patch("mlflow.log_metrics"),
+            patch("mlflow.log_artifacts"),
+            patch("mlflow.log_model"),
+            patch("mlflow.end_run"),
+        ):
 
             # Run pipeline
             loader = DataLoader(config)
