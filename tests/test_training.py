@@ -574,7 +574,9 @@ def test_train_models_function():
     )
     y_val = pd.Series(np.random.randint(0, 3, 20), name="target")
 
-    with patch("src.train_customer.create_model_pipeline") as mock_create_pipeline, patch(
+    with patch(
+        "src.train_customer.create_model_pipeline"
+    ) as mock_create_pipeline, patch(
         "src.train_customer.optuna.create_study"
     ) as mock_create_study, patch(
         "src.train_customer.objective"
@@ -582,6 +584,7 @@ def test_train_models_function():
 
         # Mock the pipeline
         from unittest.mock import MagicMock
+
         mock_pipeline = MagicMock()
         mock_pipeline.fit.return_value = None
         mock_pipeline.predict.return_value = np.random.randint(0, 3, 20)
@@ -645,7 +648,9 @@ def test_customer_create_confusion_matrix_plot_function():
     # Create test confusion matrix
     cm = np.array([[10, 2], [3, 15]])
 
-    with patch("src.train_customer.plt") as mock_plt, patch("src.train_customer.sns") as mock_sns:
+    with patch("src.train_customer.plt") as mock_plt, patch(
+        "src.train_customer.sns"
+    ) as mock_sns:
         mock_plt.figure.return_value = MagicMock()
         mock_sns.heatmap.return_value = MagicMock()
         mock_plt.title.return_value = MagicMock()
@@ -656,9 +661,7 @@ def test_customer_create_confusion_matrix_plot_function():
         mock_plt.close.return_value = MagicMock()
 
         # Test plot creation - function doesn't return anything
-        result = src.train_customer.create_confusion_matrix_plot(
-            cm, "test_plot.png"
-        )
+        result = src.train_customer.create_confusion_matrix_plot(cm, "test_plot.png")
         # Function returns None, just check it doesn't raise an error
         assert result is None
 
@@ -685,6 +688,7 @@ def test_customer_log_to_mlflow_function():
     # Create mock objects
     import pandas as pd
     import numpy as np
+
     mock_model = MagicMock()
     mock_encoders = {"label_encoder": MagicMock()}
     training_results = {
