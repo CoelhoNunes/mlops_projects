@@ -128,19 +128,30 @@ class TestEndToEndPipeline:
         ]
 
         # Mock MLflow
-        mock_mlflow.set_tracking_uri = patch.MagicMock()
-        mock_mlflow.set_experiment = patch.MagicMock()
-        mock_mlflow.start_run = patch.MagicMock()
+        from unittest.mock import MagicMock
+        mock_mlflow.set_tracking_uri = MagicMock()
+        mock_mlflow.set_experiment = MagicMock()
+        mock_mlflow.start_run = MagicMock()
         mock_mlflow.active_run.return_value.info.run_id = "test-run"
         mock_mlflow.active_run.return_value.info.experiment_id = "test-exp"
 
         # Test that the script can run in smoke mode without crashing
         try:
+            # Mock sys.argv to provide proper arguments for the main function
+            import sys
+            original_argv = sys.argv
+            sys.argv = ['train.py', '--smoke']
+            
             # This should not raise an exception
             result = src.train.main()
             # In smoke mode, it should return 0 (success)
             assert result == 0
+            
+            # Restore original argv
+            sys.argv = original_argv
         except Exception as e:
+            # Restore original argv in case of exception
+            sys.argv = original_argv
             pytest.fail(f"Training script failed in smoke mode: {e}")
 
     def test_data_creation_and_manipulation(self, synthetic_data):
