@@ -129,6 +129,7 @@ class TestEndToEndPipeline:
 
         # Mock MLflow
         from unittest.mock import MagicMock
+
         mock_mlflow.set_tracking_uri = MagicMock()
         mock_mlflow.set_experiment = MagicMock()
         mock_mlflow.start_run = MagicMock()
@@ -139,14 +140,15 @@ class TestEndToEndPipeline:
         try:
             # Mock sys.argv to provide proper arguments for the main function
             import sys
+
             original_argv = sys.argv
-            sys.argv = ['train.py', '--smoke']
-            
+            sys.argv = ["train.py", "--smoke"]
+
             # This should not raise an exception
             result = src.train.main()
             # In smoke mode, it should return 0 (success)
             assert result == 0
-            
+
             # Restore original argv
             sys.argv = original_argv
         except Exception as e:
