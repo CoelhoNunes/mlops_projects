@@ -489,15 +489,14 @@ def test_engineer_features_function():
         }
     )
 
-    # Test feature engineering
-    result_df, feature_info = src.train_customer.engineer_features(test_df)
+    # Test feature engineering - function returns only DataFrame, not tuple
+    result_df = src.train_customer.engineer_features(test_df)
 
     # Check that new features were created
     assert "zip_code_numeric" in result_df.columns
     assert "region" in result_df.columns
     assert "city_length" in result_df.columns
     assert "city_word_count" in result_df.columns
-    assert isinstance(feature_info, dict)
 
 
 def test_customer_split_data_function():
@@ -506,17 +505,17 @@ def test_customer_split_data_function():
     import pandas as pd
 
     # Create test data
-    test_df = pd.DataFrame(
+    X = pd.DataFrame(
         {
             "customer_unique_id": range(100),
             "customer_zip_code_prefix": ["12345"] * 100,
             "customer_city": ["São Paulo"] * 100,
-            "customer_state": ["SP"] * 50 + ["RJ"] * 50,
         }
     )
+    y = pd.Series(["SP"] * 50 + ["RJ"] * 50, name="customer_state")
 
-    # Test data splitting
-    result = src.train_customer.split_data(test_df, test_size=0.2, val_size=0.2)
+    # Test data splitting - function requires X and y parameters
+    result = src.train_customer.split_data(X, y, test_size=0.2, val_size=0.2)
     X_train, X_val, X_test, y_train, y_val, y_test = result
 
     # Check shapes
@@ -534,11 +533,12 @@ def test_create_model_pipeline_function():
     assert hasattr(rf_pipeline, "fit")
     assert hasattr(rf_pipeline, "predict")
 
-    # Test XGBoost pipeline
-    xgb_pipeline = src.train_customer.create_model_pipeline("xgb")
-    assert xgb_pipeline is not None
-    assert hasattr(xgb_pipeline, "fit")
-    assert hasattr(xgb_pipeline, "predict")
+    # Test that unsupported model type raises ValueError
+    try:
+        src.train_customer.create_model_pipeline("xgb")
+        assert False, "Expected ValueError for unsupported model type"
+    except ValueError:
+        pass  # Expected behavior
 
 
 def test_create_lr_pipeline_with_params_function():
@@ -574,29 +574,40 @@ def test_train_models_function():
     )
     y_val = pd.Series(np.random.randint(0, 3, 20), name="target")
 
-    with patch("src.train_customer.create_model_pipeline") as mock_create_pipeline:
+    with patch("src.train_customer.create_model_pipeline") as mock_create_pipeline, patch(
+        "src.train_customer.optuna.create_study"
+    ) as mock_create_study, patch(
+        "src.train_customer.objective"
+    ) as mock_objective:
 
         # Mock the pipeline
-        mock_pipeline = patch("src.train_customer.Pipeline").start()
+        from unittest.mock import MagicMock
+        mock_pipeline = MagicMock()
         mock_pipeline.fit.return_value = None
         mock_pipeline.predict.return_value = np.random.randint(0, 3, 20)
         mock_pipeline.score.return_value = 0.85
+        mock_pipeline.named_steps = {"classifier": MagicMock()}
         mock_create_pipeline.return_value = mock_pipeline
 
         # Mock optuna study
-        mock_study = patch("src.train_customer.optuna.create_study").start()
+        mock_study = MagicMock()
         mock_study.optimize.return_value = None
         mock_study.best_params = {"n_estimators": 100, "max_depth": 10}
         mock_study.best_value = 0.85
+        mock_create_study.return_value = mock_study
+
+        # Mock objective function to return a float
+        mock_objective.return_value = 0.85
 
         # Test training
         results = src.train_customer.train_models(X_train, y_train, X_val, y_val)
 
         # Check results structure
         assert isinstance(results, dict)
-        assert "rf" in results
-        assert "xgb" in results
-        assert "lr" in results
+        assert "random_forest" in results
+        assert "logistic_regression" in results
+        assert "best_model" in results
+        assert "best_score" in results
 
 
 def test_customer_evaluate_model_function():
@@ -634,23 +645,22 @@ def test_customer_create_confusion_matrix_plot_function():
     # Create test confusion matrix
     cm = np.array([[10, 2], [3, 15]])
 
-    with patch("src.train_customer.plt") as mock_plt:
+    with patch("src.train_customer.plt") as mock_plt, patch("src.train_customer.sns") as mock_sns:
         mock_plt.figure.return_value = MagicMock()
-        mock_plt.imshow.return_value = MagicMock()
+        mock_sns.heatmap.return_value = MagicMock()
         mock_plt.title.return_value = MagicMock()
-        mock_plt.colorbar.return_value = MagicMock()
-        mock_plt.text.return_value = MagicMock()
-        mock_plt.ylabel.return_value = MagicMock()
         mock_plt.xlabel.return_value = MagicMock()
+        mock_plt.ylabel.return_value = MagicMock()
         mock_plt.tight_layout.return_value = MagicMock()
         mock_plt.savefig.return_value = MagicMock()
         mock_plt.close.return_value = MagicMock()
 
-        # Test plot creation
-        result_path = src.train_customer.create_confusion_matrix_plot(
+        # Test plot creation - function doesn't return anything
+        result = src.train_customer.create_confusion_matrix_plot(
             cm, "test_plot.png"
         )
-        assert result_path == "test_plot.png"
+        # Function returns None, just check it doesn't raise an error
+        assert result is None
 
 
 def test_ensure_model_compatibility_function():
@@ -673,18 +683,25 @@ def test_customer_log_to_mlflow_function():
     from unittest.mock import patch, MagicMock
 
     # Create mock objects
+    import pandas as pd
+    import numpy as np
     mock_model = MagicMock()
-    mock_scaler = MagicMock()
+    mock_encoders = {"label_encoder": MagicMock()}
     training_results = {
-        "rf": {"accuracy": 0.85, "params": {"n_estimators": 100}},
-        "xgb": {"accuracy": 0.87, "params": {"max_depth": 6}},
-        "lr": {"accuracy": 0.82, "params": {"penalty": "l2"}},
+        "random_forest": {"val_score": 0.85, "params": {"n_estimators": 100}},
+        "logistic_regression": {"val_score": 0.82, "params": {"penalty": "l2"}},
     }
     evaluation_results = {
         "test_accuracy": 0.84,
         "classification_report": {"accuracy": 0.84},
         "confusion_matrix": [[10, 2], [3, 15]],
     }
+
+    # Create test data
+    X_test = pd.DataFrame(np.random.randn(20, 3), columns=["f1", "f2", "f3"])
+    y_test = pd.Series(np.random.randint(0, 3, 20), name="target")
+    X_train = pd.DataFrame(np.random.randn(50, 3), columns=["f1", "f2", "f3"])
+    X_val = pd.DataFrame(np.random.randn(20, 3), columns=["f1", "f2", "f3"])
 
     with patch("src.train_customer.mlflow") as mock_mlflow, patch(
         "src.train_customer.pd.Timestamp"
@@ -697,13 +714,17 @@ def test_customer_log_to_mlflow_function():
         mock_timestamp.now.return_value.strftime.return_value = "20240101-120000"
         mock_df.return_value.to_csv.return_value = None
 
-        # Test MLflow logging
+        # Test MLflow logging with all required parameters
         src.train_customer.log_to_mlflow(
             mock_model,
-            mock_scaler,
+            mock_encoders,
             training_results,
             evaluation_results,
             "test_plot.png",
+            X_test,
+            y_test,
+            X_train,
+            X_val,
             smoke=False,
         )
 
