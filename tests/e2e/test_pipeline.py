@@ -98,7 +98,9 @@ class TestEndToEndPipeline:
     @patch("src.train.StandardScaler")
     @patch("src.train.RandomForestClassifier")
     @patch("src.train.plt")
-    def test_smoke_test_mode(self, mock_plt, mock_rf, mock_scaler, mock_split, mock_digits, mock_mlflow):
+    def test_smoke_test_mode(
+        self, mock_plt, mock_rf, mock_scaler, mock_split, mock_digits, mock_mlflow
+    ):
         """Test that smoke test mode works correctly."""
         import sys
         from pathlib import Path
@@ -117,20 +119,27 @@ class TestEndToEndPipeline:
         mock_digits.return_value = mock_data
 
         # Mock the split with proper arrays
-        mock_X_train = pd.DataFrame([[1, 2, 3]], columns=['pixel_0', 'pixel_1', 'pixel_2'])
-        mock_X_val = pd.DataFrame([[4, 5, 6]], columns=['pixel_0', 'pixel_1', 'pixel_2'])
-        mock_X_test = pd.DataFrame([[7, 8, 9]], columns=['pixel_0', 'pixel_1', 'pixel_2'])
-        mock_y_train = pd.Series([0], name='digit')
-        mock_y_val = pd.Series([1], name='digit')
-        mock_y_test = pd.Series([0], name='digit')
-        
+        mock_X_train = pd.DataFrame(
+            [[1, 2, 3]], columns=["pixel_0", "pixel_1", "pixel_2"]
+        )
+        mock_X_val = pd.DataFrame(
+            [[4, 5, 6]], columns=["pixel_0", "pixel_1", "pixel_2"]
+        )
+        mock_X_test = pd.DataFrame(
+            [[7, 8, 9]], columns=["pixel_0", "pixel_1", "pixel_2"]
+        )
+        mock_y_train = pd.Series([0], name="digit")
+        mock_y_val = pd.Series([1], name="digit")
+        mock_y_test = pd.Series([0], name="digit")
+
         mock_split.side_effect = [
             (mock_X_train, mock_X_test, mock_y_train, mock_y_test),  # First split
-            (mock_X_train, mock_X_val, mock_y_train, mock_y_val),    # Second split
+            (mock_X_train, mock_X_val, mock_y_train, mock_y_val),  # Second split
         ]
 
         # Mock scaler
         from unittest.mock import MagicMock
+
         mock_scaler_instance = MagicMock()
         mock_scaler_instance.fit_transform.return_value = np.array([[1, 2, 3]])
         mock_scaler_instance.transform.return_value = np.array([[4, 5, 6]])

@@ -39,7 +39,9 @@ def test_training_functions_exist():
 @patch("src.train.StandardScaler")
 @patch("src.train.RandomForestClassifier")
 @patch("src.train.plt")
-def test_smoke_test_mode(mock_plt, mock_rf, mock_scaler, mock_split, mock_digits, mock_mlflow):
+def test_smoke_test_mode(
+    mock_plt, mock_rf, mock_scaler, mock_split, mock_digits, mock_mlflow
+):
     """Test that smoke test mode works correctly."""
     import src.train
     import numpy as np
@@ -52,16 +54,16 @@ def test_smoke_test_mode(mock_plt, mock_rf, mock_scaler, mock_split, mock_digits
     mock_digits.return_value = mock_data
 
     # Mock the split with proper arrays
-    mock_X_train = pd.DataFrame([[1, 2, 3]], columns=['pixel_0', 'pixel_1', 'pixel_2'])
-    mock_X_val = pd.DataFrame([[4, 5, 6]], columns=['pixel_0', 'pixel_1', 'pixel_2'])
-    mock_X_test = pd.DataFrame([[7, 8, 9]], columns=['pixel_0', 'pixel_1', 'pixel_2'])
-    mock_y_train = pd.Series([0], name='digit')
-    mock_y_val = pd.Series([1], name='digit')
-    mock_y_test = pd.Series([0], name='digit')
-    
+    mock_X_train = pd.DataFrame([[1, 2, 3]], columns=["pixel_0", "pixel_1", "pixel_2"])
+    mock_X_val = pd.DataFrame([[4, 5, 6]], columns=["pixel_0", "pixel_1", "pixel_2"])
+    mock_X_test = pd.DataFrame([[7, 8, 9]], columns=["pixel_0", "pixel_1", "pixel_2"])
+    mock_y_train = pd.Series([0], name="digit")
+    mock_y_val = pd.Series([1], name="digit")
+    mock_y_test = pd.Series([0], name="digit")
+
     mock_split.side_effect = [
         (mock_X_train, mock_X_test, mock_y_train, mock_y_test),  # First split
-        (mock_X_train, mock_X_val, mock_y_train, mock_y_val),    # Second split
+        (mock_X_train, mock_X_val, mock_y_train, mock_y_val),  # Second split
     ]
 
     # Mock scaler
@@ -174,7 +176,9 @@ def test_split_data_function():
     import numpy as np
 
     # Create test data
-    X = pd.DataFrame(np.random.randn(100, 5), columns=[f"feature_{i}" for i in range(5)])
+    X = pd.DataFrame(
+        np.random.randn(100, 5), columns=[f"feature_{i}" for i in range(5)]
+    )
     y = pd.Series(np.random.randint(0, 3, 100), name="target")
 
     # Test data splitting
@@ -311,27 +315,33 @@ def test_log_to_mlflow_function():
         "val_accuracy": 0.85,
         "n_estimators": 100,
         "max_depth": 10,
-        "feature_importance": {0: 0.3, 1: 0.4, 2: 0.3}
+        "feature_importance": {0: 0.3, 1: 0.4, 2: 0.3},
     }
     evaluation_results = {
         "test_accuracy": 0.82,
         "classification_report": {"accuracy": 0.82},
-        "confusion_matrix": [[10, 2], [3, 15]]
+        "confusion_matrix": [[10, 2], [3, 15]],
     }
 
-    with patch("src.train.mlflow") as mock_mlflow, \
-         patch("src.train.pd.Timestamp") as mock_timestamp, \
-         patch("src.train.pd.DataFrame") as mock_df, \
-         patch("builtins.open", MagicMock()), \
-         patch("os.path.exists", return_value=False):
+    with patch("src.train.mlflow") as mock_mlflow, patch(
+        "src.train.pd.Timestamp"
+    ) as mock_timestamp, patch("src.train.pd.DataFrame") as mock_df, patch(
+        "builtins.open", MagicMock()
+    ), patch(
+        "os.path.exists", return_value=False
+    ):
 
         mock_timestamp.now.return_value.strftime.return_value = "20240101-120000"
         mock_df.return_value.to_csv.return_value = None
 
         # Test MLflow logging
         src.train.log_to_mlflow(
-            mock_model, mock_scaler, training_results, 
-            evaluation_results, "test_plot.png", smoke=False
+            mock_model,
+            mock_scaler,
+            training_results,
+            evaluation_results,
+            "test_plot.png",
+            smoke=False,
         )
 
         # Check that MLflow methods were called
@@ -357,6 +367,7 @@ def test_train_customer_script_import():
     """Test that the customer training script can be imported."""
     try:
         import src.train_customer
+
         assert src.train_customer is not None
     except ImportError as e:
         pytest.fail(f"Failed to import customer training script: {e}")
@@ -379,4 +390,5 @@ def test_train_customer_functions_exist():
 def test_train_customer_main_function():
     """Test that the customer training main function exists and is callable."""
     import src.train_customer
+
     assert callable(src.train_customer.main)
