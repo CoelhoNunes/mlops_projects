@@ -494,7 +494,7 @@ def test_engineer_features_function():
 
     # Check that new features were created
     assert "zip_code_numeric" in X.columns
-    assert "region" in X.columns
+    assert "region_encoded" in X.columns
     assert "city_length" in X.columns
     assert "city_word_count" in X.columns
     assert isinstance(y, pd.Series)
@@ -618,8 +618,9 @@ def test_train_models_function():
 
         # Check results structure
         assert isinstance(results, dict)
-        assert "random_forest" in results
-        assert "logistic_regression" in results
+        assert "models" in results
+        assert "random_forest" in results["models"]
+        assert "logistic_regression" in results["models"]
         assert "best_model" in results
         assert "best_score" in results
 
