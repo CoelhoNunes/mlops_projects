@@ -34,7 +34,7 @@ class TestDataConfig:
             val_size=0.1,
             test_size=0.1,
             cv_folds=3,
-            random_seed=123
+            random_seed=123,
         )
         assert config.data_path == "./custom/path/*.csv"
         assert config.target_column == "label"
@@ -60,10 +60,7 @@ class TestModelConfig:
     def test_model_config_custom_values(self):
         """Test ModelConfig with custom values."""
         config = ModelConfig(
-            roster=["logreg", "rf"],
-            cv_folds=3,
-            optuna_trials=25,
-            random_seed=123
+            roster=["logreg", "rf"], cv_folds=3, optuna_trials=25, random_seed=123
         )
         assert config.roster == ["logreg", "rf"]
         assert config.cv_folds == 3
@@ -90,7 +87,7 @@ class TestMLflowConfig:
             experiment_name="custom-exp",
             registry_name="custom-reg",
             log_artifacts=False,
-            log_models=False
+            log_models=False,
         )
         assert config.tracking_uri == "http://localhost:5000"
         assert config.experiment_name == "custom-exp"
@@ -141,7 +138,7 @@ class TestConfig:
             "MLOPS_DATA_PATH": "./env/data/*.csv",
             "MLOPS_TARGET_COLUMN": "env_label",
             "MLOPS_MODELS": "logreg,rf",
-            "MLFLOW_TRACKING_URI": "http://env:5000"
+            "MLFLOW_TRACKING_URI": "http://env:5000",
         }
 
         with patch.dict(os.environ, env_vars):
@@ -204,11 +201,7 @@ class TestConfigValidation:
     def test_invalid_train_val_test_split(self):
         """Test that train/val/test split validation works."""
         with pytest.raises(ValueError):
-            DataConfig(
-                train_size=0.5,
-                val_size=0.3,
-                test_size=0.3  # Total > 1.0
-            )
+            DataConfig(train_size=0.5, val_size=0.3, test_size=0.3)  # Total > 1.0
 
     def test_invalid_cv_folds(self):
         """Test that CV folds validation works."""

@@ -13,6 +13,7 @@ def test_training_script_import():
     """Test that the training script can be imported."""
     try:
         import src.train
+
         assert src.train is not None
     except ImportError as e:
         pytest.fail(f"Failed to import training script: {e}")

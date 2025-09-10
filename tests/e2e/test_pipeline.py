@@ -40,18 +40,18 @@ class TestEndToEndPipeline:
         for i in range(n_features):
             if i % 2 == 0:
                 # Numeric features
-                data[f'numeric_{i}'] = np.random.normal(0, 1, n_samples)
+                data[f"numeric_{i}"] = np.random.normal(0, 1, n_samples)
             else:
                 # Categorical features
-                data[f'cat_{i}'] = np.random.choice(['A', 'B', 'C'], n_samples)
+                data[f"cat_{i}"] = np.random.choice(["A", "B", "C"], n_samples)
 
         # Create target (simple rule: if sum of numeric > 0, then 1, else 0)
-        numeric_sum = sum([data[f'numeric_{i}'] for i in range(0, n_features, 2)])
-        data['target'] = (numeric_sum > 0).astype(int)
+        numeric_sum = sum([data[f"numeric_{i}"] for i in range(0, n_features, 2)])
+        data["target"] = (numeric_sum > 0).astype(int)
 
         # Add some noise
         noise = np.random.random(n_samples) < 0.1
-        data['target'] = data['target'] ^ noise
+        data["target"] = data["target"] ^ noise
 
         return pd.DataFrame(data)
 
@@ -153,7 +153,7 @@ class TestEndToEndPipeline:
                     training_results["best_model"],
                     "test-model",
                     "sklearn",
-                    evaluation_results
+                    evaluation_results,
                 )
 
                 assert registration_result is not None
