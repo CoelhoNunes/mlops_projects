@@ -95,7 +95,10 @@ class TestEndToEndPipeline:
     @patch("src.train.mlflow")
     @patch("src.train.load_digits")
     @patch("src.train.train_test_split")
-    def test_smoke_test_mode(self, mock_split, mock_digits, mock_mlflow):
+    @patch("src.train.StandardScaler")
+    @patch("src.train.RandomForestClassifier")
+    @patch("src.train.plt")
+    def test_smoke_test_mode(self, mock_plt, mock_rf, mock_scaler, mock_split, mock_digits, mock_mlflow):
         """Test that smoke test mode works correctly."""
         import sys
         from pathlib import Path
@@ -104,28 +107,42 @@ class TestEndToEndPipeline:
         sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
         import src.train
+        import numpy as np
+        import pandas as pd
 
-        # Mock the data loading
+        # Mock the data loading with proper numpy arrays
         mock_data = type("MockData", (), {})()
-        mock_data.data = [[1, 2, 3], [4, 5, 6]]
-        mock_data.target = [0, 1]
+        mock_data.data = np.array([[1, 2, 3], [4, 5, 6]])
+        mock_data.target = np.array([0, 1])
         mock_digits.return_value = mock_data
 
-        # Mock the split
+        # Mock the split with proper arrays
+        mock_X_train = pd.DataFrame([[1, 2, 3]], columns=['pixel_0', 'pixel_1', 'pixel_2'])
+        mock_X_val = pd.DataFrame([[4, 5, 6]], columns=['pixel_0', 'pixel_1', 'pixel_2'])
+        mock_X_test = pd.DataFrame([[7, 8, 9]], columns=['pixel_0', 'pixel_1', 'pixel_2'])
+        mock_y_train = pd.Series([0], name='digit')
+        mock_y_val = pd.Series([1], name='digit')
+        mock_y_test = pd.Series([0], name='digit')
+        
         mock_split.side_effect = [
-            (
-                type("MockArray", (), {})(),
-                type("MockArray", (), {})(),
-                type("MockArray", (), {})(),
-                type("MockArray", (), {})(),
-            ),  # First split
-            (
-                type("MockArray", (), {})(),
-                type("MockArray", (), {})(),
-                type("MockArray", (), {})(),
-                type("MockArray", (), {})(),
-            ),  # Second split
+            (mock_X_train, mock_X_test, mock_y_train, mock_y_test),  # First split
+            (mock_X_train, mock_X_val, mock_y_train, mock_y_val),    # Second split
         ]
+
+        # Mock scaler
+        mock_scaler_instance = MagicMock()
+        mock_scaler_instance.fit_transform.return_value = np.array([[1, 2, 3]])
+        mock_scaler_instance.transform.return_value = np.array([[4, 5, 6]])
+        mock_scaler.return_value = mock_scaler_instance
+
+        # Mock model
+        mock_model = MagicMock()
+        mock_model.fit.return_value = None
+        mock_model.predict.return_value = np.array([0, 1])
+        mock_model.n_estimators = 100
+        mock_model.max_depth = 10
+        mock_model.feature_importances_ = np.array([0.3, 0.4, 0.3])
+        mock_rf.return_value = mock_model
 
         # Mock MLflow
         from unittest.mock import MagicMock
@@ -135,6 +152,22 @@ class TestEndToEndPipeline:
         mock_mlflow.start_run = MagicMock()
         mock_mlflow.active_run.return_value.info.run_id = "test-run"
         mock_mlflow.active_run.return_value.info.experiment_id = "test-exp"
+        mock_mlflow.log_params = MagicMock()
+        mock_mlflow.log_metrics = MagicMock()
+        mock_mlflow.sklearn.log_model = MagicMock()
+        mock_mlflow.log_artifact = MagicMock()
+
+        # Mock matplotlib
+        mock_plt.figure.return_value = MagicMock()
+        mock_plt.imshow.return_value = MagicMock()
+        mock_plt.title.return_value = MagicMock()
+        mock_plt.colorbar.return_value = MagicMock()
+        mock_plt.text.return_value = MagicMock()
+        mock_plt.ylabel.return_value = MagicMock()
+        mock_plt.xlabel.return_value = MagicMock()
+        mock_plt.tight_layout.return_value = MagicMock()
+        mock_plt.savefig.return_value = MagicMock()
+        mock_plt.close.return_value = MagicMock()
 
         # Test that the script can run in smoke mode without crashing
         try:
