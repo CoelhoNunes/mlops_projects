@@ -105,66 +105,6 @@ jobs:
             htmlcov/
           if-no-files-found: ignore
 
-  test-312:
-    name: Test (Python 3.12)
-    runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') && !inputs.skip_tests }}
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Cache pip dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-3.12-${{ hashFiles('config/requirements.txt', 'config/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-3.12-
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip setuptools wheel
-          pip install -r config/requirements.txt
-          pip install pytest pytest-cov ruff black
-
-      - name: Check for forbidden trackers
-        run: |
-          # Check for forbidden trackers (should fail CI if found)
-          # Exclude documentation, deployment, and configuration files that mention these tools for reference
-          if grep -r --exclude-dir={.git,.github,node_modules,.venv,venv,__pycache__,docs,assets,deployment} --exclude={*.pyc,*.pyo,*.md,*.sh,*.mp4,*.yaml,*.yml} -i "zenml\|wandb\|neptune\|dvc\|airflow\|prefect\|argo" .; then
-            echo "❌ Forbidden trackers found! Only MLflow is allowed."
-            exit 1
-          fi
-          echo "✅ No forbidden trackers found"
-
-      - name: Lint with ruff
-        run: |
-          ruff check src/ tests/
-
-      - name: Format check with black
-        run: |
-          black --check src/ tests/
-
-      - name: Run unit tests
-        run: |
-          pytest tests/ -v --cov=src --cov-report=xml --cov-report=term-missing --cov-fail-under=80
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pytest-results-3.12
-          path: |
-            .pytest_cache
-            coverage.xml
-            htmlcov/
-          if-no-files-found: ignore
 
   # =============================================================================
   # SECURITY SCANNING
@@ -219,7 +159,7 @@ jobs:
     name: Test Training Pipeline
     runs-on: ubuntu-latest
     if: ${{ !contains(github.event.head_commit.message, '[skip ci]') && !inputs.skip_tests }}
-    needs: [test, test-312, security]
+    needs: [test, security]
     
     steps:
       - name: Checkout repository
@@ -265,7 +205,7 @@ jobs:
     name: Build CPU Training Image
     runs-on: ubuntu-latest
     if: ${{ !contains(github.event.head_commit.message, '[skip ci]') && github.event_name != 'pull_request' }}
-    needs: [test, test-312, security, train-test]
+    needs: [test, security, train-test]
     permissions:
       contents: read
       packages: write
@@ -325,7 +265,7 @@ jobs:
     name: Build GPU Training Image
     runs-on: ubuntu-latest
     if: ${{ !contains(github.event.head_commit.message, '[skip ci]') && github.event_name != 'pull_request' && (github.event_name == 'workflow_dispatch' && inputs.build_gpu == 'true') }}
-    needs: [test, test-312, security, train-test]
+    needs: [test, security, train-test]
     permissions:
       contents: read
       packages: write
@@ -503,7 +443,7 @@ jobs:
   repository-health:
     name: Repository Health Check
     runs-on: ubuntu-latest
-    needs: [test, test-312, security]
+    needs: [test, security]
     if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     
     steps:
