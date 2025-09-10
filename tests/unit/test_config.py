@@ -14,13 +14,14 @@ class TestBasicFunctionality:
         """Test that basic Python imports work."""
         import sys
         from pathlib import Path
-        
+
         # Add src to path for imports
         sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
-        
+
         # Test that we can import the training modules
         try:
             import src.train
+
             assert src.train is not None
         except ImportError as e:
             pytest.fail(f"Failed to import training script: {e}")
@@ -29,12 +30,12 @@ class TestBasicFunctionality:
         """Test that training script has expected functions."""
         import sys
         from pathlib import Path
-        
+
         # Add src to path for imports
         sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
-        
+
         import src.train
-        
+
         # Check that main functions exist
         assert hasattr(src.train, "load_data")
         assert hasattr(src.train, "split_data")
@@ -48,12 +49,12 @@ class TestBasicFunctionality:
         """Test that customer training script has expected functions."""
         import sys
         from pathlib import Path
-        
+
         # Add src to path for imports
         sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
-        
+
         import src.train_customer
-        
+
         # Check that main functions exist
         assert hasattr(src.train_customer, "load_customer_data")
         assert hasattr(src.train_customer, "engineer_features")
@@ -67,7 +68,7 @@ class TestBasicFunctionality:
         """Test that environment variables can be set."""
         test_var = "TEST_VARIABLE"
         test_value = "test_value"
-        
+
         with patch.dict(os.environ, {test_var: test_value}):
             assert os.environ[test_var] == test_value
 
@@ -76,7 +77,7 @@ class TestBasicFunctionality:
         with tempfile.NamedTemporaryFile(mode="w", delete=False) as f:
             f.write("test content")
             temp_path = f.name
-        
+
         try:
             assert os.path.exists(temp_path)
             with open(temp_path, "r") as f:
