@@ -47,19 +47,27 @@ def test_smoke_test_mode(
     import numpy as np
     import pandas as pd
 
-    # Mock the data loading with proper numpy arrays
+    # Mock the data loading with proper numpy arrays (larger dataset for smoke test)
     mock_data = MagicMock()
-    mock_data.data = np.array([[1, 2, 3], [4, 5, 6]])
-    mock_data.target = np.array([0, 1])
+    mock_data.data = np.random.randn(
+        200, 64
+    )  # 200 samples, 64 features (like digits dataset)
+    mock_data.target = np.random.randint(0, 10, 200)  # 200 targets
     mock_digits.return_value = mock_data
 
-    # Mock the split with proper arrays
-    mock_X_train = pd.DataFrame([[1, 2, 3]], columns=["pixel_0", "pixel_1", "pixel_2"])
-    mock_X_val = pd.DataFrame([[4, 5, 6]], columns=["pixel_0", "pixel_1", "pixel_2"])
-    mock_X_test = pd.DataFrame([[7, 8, 9]], columns=["pixel_0", "pixel_1", "pixel_2"])
-    mock_y_train = pd.Series([0], name="digit")
-    mock_y_val = pd.Series([1], name="digit")
-    mock_y_test = pd.Series([0], name="digit")
+    # Mock the split with proper arrays (larger datasets)
+    mock_X_train = pd.DataFrame(
+        np.random.randn(100, 64), columns=[f"pixel_{i}" for i in range(64)]
+    )
+    mock_X_val = pd.DataFrame(
+        np.random.randn(50, 64), columns=[f"pixel_{i}" for i in range(64)]
+    )
+    mock_X_test = pd.DataFrame(
+        np.random.randn(50, 64), columns=[f"pixel_{i}" for i in range(64)]
+    )
+    mock_y_train = pd.Series(np.random.randint(0, 10, 100), name="digit")
+    mock_y_val = pd.Series(np.random.randint(0, 10, 50), name="digit")
+    mock_y_test = pd.Series(np.random.randint(0, 10, 50), name="digit")
 
     mock_split.side_effect = [
         (mock_X_train, mock_X_test, mock_y_train, mock_y_test),  # First split
@@ -68,17 +76,19 @@ def test_smoke_test_mode(
 
     # Mock scaler
     mock_scaler_instance = MagicMock()
-    mock_scaler_instance.fit_transform.return_value = np.array([[1, 2, 3]])
-    mock_scaler_instance.transform.return_value = np.array([[4, 5, 6]])
+    mock_scaler_instance.fit_transform.return_value = np.random.randn(100, 64)
+    mock_scaler_instance.transform.return_value = np.random.randn(50, 64)
     mock_scaler.return_value = mock_scaler_instance
 
     # Mock model
     mock_model = MagicMock()
     mock_model.fit.return_value = None
-    mock_model.predict.return_value = np.array([0, 1])
+    mock_model.predict.return_value = np.random.randint(
+        0, 10, 50
+    )  # Match validation size
     mock_model.n_estimators = 100
     mock_model.max_depth = 10
-    mock_model.feature_importances_ = np.array([0.3, 0.4, 0.3])
+    mock_model.feature_importances_ = np.random.rand(64)  # 64 features
     mock_rf.return_value = mock_model
 
     # Mock MLflow
@@ -235,7 +245,9 @@ def test_train_model_function():
         # Mock the model
         mock_model = MagicMock()
         mock_model.fit.return_value = None
-        mock_model.predict.return_value = np.array([0, 1, 0, 1, 0])
+        mock_model.predict.return_value = np.random.randint(
+            0, 3, 20
+        )  # Match y_val size (20)
         mock_model.n_estimators = 100
         mock_model.max_depth = 10
         mock_model.feature_importances_ = np.array([0.3, 0.4, 0.3])
@@ -357,10 +369,19 @@ def test_main_function_error_handling():
     """Test the main function error handling."""
     import src.train
     from unittest.mock import patch
+    import sys
 
-    with patch("src.train.load_data", side_effect=Exception("Test error")):
-        result = src.train.main()
-        assert result == 1  # Should return 1 on error
+    # Mock sys.argv to avoid pytest arguments
+    original_argv = sys.argv
+    sys.argv = ["train.py"]
+
+    try:
+        with patch("src.train.load_data", side_effect=Exception("Test error")):
+            result = src.train.main()
+            assert result == 1  # Should return 1 on error
+    finally:
+        # Restore original argv
+        sys.argv = original_argv
 
 
 def test_train_customer_script_import():
