@@ -419,9 +419,7 @@ def test_load_customer_data_function():
     """Test the load_customer_data function."""
     import src.train_customer
     import pandas as pd
-    import numpy as np
     from unittest.mock import patch, mock_open
-    import io
 
     # Create test CSV data
     test_data = """customer_unique_id,customer_zip_code_prefix,customer_city,customer_state
@@ -474,7 +472,6 @@ def test_engineer_features_function():
     """Test the engineer_features function."""
     import src.train_customer
     import pandas as pd
-    import numpy as np
 
     # Create test data
     test_df = pd.DataFrame(
@@ -503,11 +500,10 @@ def test_engineer_features_function():
     assert isinstance(feature_info, dict)
 
 
-def test_split_data_function():
-    """Test the split_data function."""
+def test_customer_split_data_function():
+    """Test the split_data function for customer training."""
     import src.train_customer
     import pandas as pd
-    import numpy as np
 
     # Create test data
     test_df = pd.DataFrame(
@@ -578,9 +574,7 @@ def test_train_models_function():
     )
     y_val = pd.Series(np.random.randint(0, 3, 20), name="target")
 
-    with patch(
-        "src.train_customer.create_model_pipeline"
-    ) as mock_create_pipeline, patch("src.train_customer.objective") as mock_objective:
+    with patch("src.train_customer.create_model_pipeline") as mock_create_pipeline:
 
         # Mock the pipeline
         mock_pipeline = patch("src.train_customer.Pipeline").start()
@@ -605,8 +599,8 @@ def test_train_models_function():
         assert "lr" in results
 
 
-def test_evaluate_model_function():
-    """Test the evaluate_model function."""
+def test_customer_evaluate_model_function():
+    """Test the evaluate_model function for customer training."""
     import src.train_customer
     import pandas as pd
     import numpy as np
@@ -618,22 +612,21 @@ def test_evaluate_model_function():
     )
     y_test = pd.Series(np.random.randint(0, 3, 30), name="target")
 
-    with patch("src.train_customer.Pipeline") as mock_pipeline:
-        # Mock the model
-        mock_model = patch("src.train_customer.Pipeline").start()
-        mock_model.predict.return_value = np.random.randint(0, 3, 30)
+    # Mock the model
+    mock_model = patch("src.train_customer.Pipeline").start()
+    mock_model.predict.return_value = np.random.randint(0, 3, 30)
 
-        # Test evaluation
-        results = src.train_customer.evaluate_model(mock_model, X_test, y_test)
+    # Test evaluation
+    results = src.train_customer.evaluate_model(mock_model, X_test, y_test)
 
-        # Check results
-        assert "test_accuracy" in results
-        assert "classification_report" in results
-        assert "confusion_matrix" in results
+    # Check results
+    assert "test_accuracy" in results
+    assert "classification_report" in results
+    assert "confusion_matrix" in results
 
 
-def test_create_confusion_matrix_plot_function():
-    """Test the create_confusion_matrix_plot function."""
+def test_customer_create_confusion_matrix_plot_function():
+    """Test the create_confusion_matrix_plot function for customer training."""
     import src.train_customer
     import numpy as np
     from unittest.mock import patch, MagicMock
@@ -663,7 +656,7 @@ def test_create_confusion_matrix_plot_function():
 def test_ensure_model_compatibility_function():
     """Test the ensure_model_compatibility function."""
     import src.train_customer
-    from unittest.mock import patch, MagicMock
+    from unittest.mock import MagicMock
 
     # Mock pipeline
     mock_pipeline = MagicMock()
@@ -674,10 +667,9 @@ def test_ensure_model_compatibility_function():
     assert result is not None
 
 
-def test_log_to_mlflow_function():
-    """Test the log_to_mlflow function."""
+def test_customer_log_to_mlflow_function():
+    """Test the log_to_mlflow function for customer training."""
     import src.train_customer
-    import numpy as np
     from unittest.mock import patch, MagicMock
 
     # Create mock objects
@@ -724,8 +716,8 @@ def test_log_to_mlflow_function():
         mock_mlflow.log_artifact.assert_called()
 
 
-def test_main_function_error_handling():
-    """Test the main function error handling."""
+def test_customer_main_function_error_handling():
+    """Test the main function error handling for customer training."""
     import src.train_customer
     from unittest.mock import patch
     import sys
