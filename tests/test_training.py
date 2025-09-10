@@ -489,15 +489,16 @@ def test_engineer_features_function():
         }
     )
 
-    # Test feature engineering - function returns tuple (DataFrame, Dict)
-    result_df, feature_info = src.train_customer.engineer_features(test_df)
+    # Test feature engineering - function returns 3 values: X, y, encoders
+    X, y, encoders = src.train_customer.engineer_features(test_df)
 
     # Check that new features were created
-    assert "zip_code_numeric" in result_df.columns
-    assert "region" in result_df.columns
-    assert "city_length" in result_df.columns
-    assert "city_word_count" in result_df.columns
-    assert isinstance(feature_info, dict)
+    assert "zip_code_numeric" in X.columns
+    assert "region" in X.columns
+    assert "city_length" in X.columns
+    assert "city_word_count" in X.columns
+    assert isinstance(y, pd.Series)
+    assert isinstance(encoders, dict)
 
 
 def test_customer_split_data_function():
@@ -563,7 +564,7 @@ def test_train_models_function():
     import src.train_customer
     import pandas as pd
     import numpy as np
-    from unittest.mock import patch
+    from unittest.mock import patch, MagicMock
 
     # Create test data
     X_train = pd.DataFrame(
@@ -581,17 +582,18 @@ def test_train_models_function():
         "src.train_customer.optuna.create_study"
     ) as mock_create_study, patch(
         "src.train_customer.objective"
-    ) as mock_objective:
+    ) as mock_objective, patch(
+        "src.train_customer.create_lr_pipeline_with_params"
+    ) as mock_create_lr:
 
         # Mock the pipeline
-        from unittest.mock import MagicMock
-
         mock_pipeline = MagicMock()
         mock_pipeline.fit.return_value = None
         mock_pipeline.predict.return_value = np.random.randint(0, 3, 20)
         mock_pipeline.score.return_value = 0.85
         mock_pipeline.named_steps = {"classifier": MagicMock()}
         mock_create_pipeline.return_value = mock_pipeline
+        mock_create_lr.return_value = mock_pipeline
 
         # Mock optuna study for Random Forest
         mock_study_rf = MagicMock()
@@ -701,8 +703,10 @@ def test_customer_log_to_mlflow_function():
     mock_model = MagicMock()
     mock_encoders = {"label_encoder": MagicMock()}
     training_results = {
-        "random_forest": {"val_score": 0.85, "params": {"n_estimators": 100}},
-        "logistic_regression": {"val_score": 0.82, "params": {"penalty": "l2"}},
+        "models": {
+            "random_forest": {"val_score": 0.85, "params": {"n_estimators": 100}},
+            "logistic_regression": {"val_score": 0.82, "params": {"penalty": "l2"}},
+        },
         "best_model_name": "random_forest",
         "best_score": 0.85,
     }
