@@ -19,7 +19,6 @@ Features:
 import argparse
 import os
 import sys
-from pathlib import Path
 from typing import Tuple, Dict, Any
 
 import matplotlib.pyplot as plt
@@ -27,9 +26,7 @@ import mlflow
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split, cross_val_score
@@ -146,7 +143,7 @@ def split_data(X: pd.DataFrame, y: pd.Series, test_size: float = 0.2, val_size: 
         X_temp, y_temp, test_size=val_size_adjusted, random_state=42, stratify=y_temp
     )
     
-    print(f"✅ Data split complete:")
+    print("✅ Data split complete:")
     print(f"   Train: {X_train.shape[0]} samples")
     print(f"   Validation: {X_val.shape[0]} samples") 
     print(f"   Test: {X_test.shape[0]} samples")
@@ -280,7 +277,7 @@ def train_models(X_train: pd.DataFrame, X_val: pd.DataFrame, y_train: pd.Series,
         best_model = lr_pipeline
         best_model_name = 'logistic_regression'
     
-    print(f"✅ Model training complete!")
+    print("✅ Model training complete!")
     print(f"🏆 Best model: {best_model_name} (Validation accuracy: {best_score:.4f})")
     print(f"🌲 Random Forest: {rf_score:.4f}")
     print(f"📊 Logistic Regression: {lr_score:.4f}")
@@ -521,7 +518,7 @@ This model expects preprocessed features in the same format as the training data
             "status": "FINISHED"
         }
         
-        print(f"✅ MLflow logging complete:")
+        print("✅ MLflow logging complete:")
         print(f"   Run ID: {run_info['run_id']}")
         print(f"   Experiment: {experiment_name}")
         
@@ -566,7 +563,7 @@ def main():
         )
         
         # Log everything to MLflow
-        run_info = log_to_mlflow(
+        log_to_mlflow(
             training_results['best_model'], encoders, training_results, evaluation_results, 
             confusion_matrix_path, X_test, y_test, X_train, X_val, args.smoke
         )

@@ -14,7 +14,6 @@ This script demonstrates a complete ML training pipeline:
 import argparse
 import os
 import sys
-from pathlib import Path
 from typing import Tuple
 
 import matplotlib.pyplot as plt
@@ -63,7 +62,7 @@ def split_data(X: pd.DataFrame, y: pd.Series, test_size: float = 0.2, val_size: 
         X_temp, y_temp, test_size=val_size_adjusted, random_state=42, stratify=y_temp
     )
     
-    print(f"✅ Data split complete:")
+    print("✅ Data split complete:")
     print(f"   Train: {X_train.shape[0]} samples")
     print(f"   Validation: {X_val.shape[0]} samples") 
     print(f"   Test: {X_test.shape[0]} samples")
@@ -222,7 +221,7 @@ def log_to_mlflow(model, scaler, training_results: dict, evaluation_results: dic
             "status": "FINISHED"
         }
         
-        print(f"✅ MLflow logging complete:")
+        print("✅ MLflow logging complete:")
         print(f"   Run ID: {run_info['run_id']}")
         print(f"   Experiment: {experiment_name}")
         
@@ -267,7 +266,7 @@ def main():
         )
         
         # Log everything to MLflow
-        run_info = log_to_mlflow(
+        log_to_mlflow(
             model, scaler, training_results, evaluation_results, 
             confusion_matrix_path, args.smoke
         )
