@@ -229,12 +229,13 @@ def test_train_model_function():
 
     with patch("src.train.RandomForestClassifier") as mock_rf:
         # Mock the model
-        mock_model = patch("src.train.RandomForestClassifier").start()
+        mock_model = MagicMock()
         mock_model.fit.return_value = None
         mock_model.predict.return_value = np.array([0, 1, 0, 1, 0])
         mock_model.n_estimators = 100
         mock_model.max_depth = 10
         mock_model.feature_importances_ = np.array([0.3, 0.4, 0.3])
+        mock_rf.return_value = mock_model
 
         # Test training
         model, results = src.train.train_model(X_train, y_train, X_val, y_val)
@@ -259,8 +260,9 @@ def test_evaluate_model_function():
 
     with patch("src.train.RandomForestClassifier") as mock_rf:
         # Mock the model
-        mock_model = patch("src.train.RandomForestClassifier").start()
+        mock_model = MagicMock()
         mock_model.predict.return_value = np.random.randint(0, 3, 30)
+        mock_rf.return_value = mock_model
 
         # Test evaluation
         results = src.train.evaluate_model(mock_model, X_test, y_test)
@@ -300,7 +302,6 @@ def test_create_confusion_matrix_plot_function():
 def test_log_to_mlflow_function():
     """Test the log_to_mlflow function."""
     import src.train
-    import numpy as np
     from unittest.mock import patch, MagicMock
 
     # Create mock objects
@@ -328,7 +329,7 @@ def test_log_to_mlflow_function():
         mock_df.return_value.to_csv.return_value = None
 
         # Test MLflow logging
-        result = src.train.log_to_mlflow(
+        src.train.log_to_mlflow(
             mock_model, mock_scaler, training_results, 
             evaluation_results, "test_plot.png", smoke=False
         )

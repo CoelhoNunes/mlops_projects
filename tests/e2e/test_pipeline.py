@@ -130,6 +130,7 @@ class TestEndToEndPipeline:
         ]
 
         # Mock scaler
+        from unittest.mock import MagicMock
         mock_scaler_instance = MagicMock()
         mock_scaler_instance.fit_transform.return_value = np.array([[1, 2, 3]])
         mock_scaler_instance.transform.return_value = np.array([[4, 5, 6]])
