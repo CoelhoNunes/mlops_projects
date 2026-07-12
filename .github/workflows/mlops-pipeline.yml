@@ -176,6 +176,8 @@ jobs:
           pip install -r config/requirements.txt
           
       - name: Test training pipeline (smoke test)
+        env:
+          MLFLOW_ALLOW_FILE_STORE: "true"
         run: |
           python -m src.train --smoke --mlflow-tracking-uri ./mlruns
           
